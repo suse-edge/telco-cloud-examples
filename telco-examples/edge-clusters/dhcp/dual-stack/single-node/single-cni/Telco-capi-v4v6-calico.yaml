@@ -3,6 +3,8 @@ kind: Cluster
 metadata:
   name: single-node-cluster
   namespace: default
+  labels:
+    cluster-api.cattle.io/rancher-auto-import: "true"
 spec:
   clusterNetwork:
     pods:
@@ -103,7 +105,7 @@ kind: Metal3MachineTemplate
 metadata:
   name: single-node-cluster-controlplane
   namespace: default
-spec: 
+spec:
   template:
     spec:
       automatedCleaningMode: metadata

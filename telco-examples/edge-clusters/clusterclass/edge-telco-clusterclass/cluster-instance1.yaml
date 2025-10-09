@@ -8,6 +8,8 @@ kind: Cluster
 metadata:
   name: emea-spa-cluster-1
   namespace: emea-spa
+  labels:
+    cluster-api.cattle.io/rancher-auto-import: "true"
 spec:
   topology:
     class: example-clusterclass      # ClusterClass name to be used. It should be the same as the one used in the ClusterClass definition.

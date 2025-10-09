@@ -25,6 +25,8 @@ kind: Cluster
 metadata:
   name: single-node-cluster
   namespace: default
+  labels:
+    cluster-api.cattle.io/rancher-auto-import: "true"
 spec:
   clusterNetwork:
     pods:
