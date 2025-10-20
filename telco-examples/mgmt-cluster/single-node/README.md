@@ -1,7 +1,7 @@
 
 # Management Cluster in a single-node setup
 
-This is an example of using Edge Image Builder (EIB) to generate a management cluster iso image for SUSE Edge for Telco (formerly known as ATIP). The management cluster will contain the following components:
+This is an example of using Edge Image Builder (EIB) to generate a management cluster iso image for SUSE Telco Cloud. The management cluster will contain the following components:
 - SUSE Linux Micro 6.1 Kernel (SL Micro 6.1)
 - RKE2
 - CNI plugins (e.g. Multus, Cilium)
@@ -97,7 +97,7 @@ where `ca-additional.crt` is the certificate file that you want to use to provid
 1. Clone this repo and navigate to the `telco-examples/mgmt-cluster/single-node/eib` directory.
 
 ```bash
-$ git clone https://github.com/suse-edge/atip.git
+$ git clone https://github.com/suse-edge/telco-cloud-examples.git
 $ cd telco-examples/mgmt-cluster/single-node/eib
 ```
 
