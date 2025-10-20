@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is an example to demonstrate how to deploy an edge cluster using SUSE Edge for Telco (formerly known as ATIP) and the fully automated directed network provisioning.
+This is an example to demonstrate how to deploy an edge cluster using SUSE Telco Cloud and the fully automated directed network provisioning.
 
 There are two steps to deploy an edge cluster:
 
