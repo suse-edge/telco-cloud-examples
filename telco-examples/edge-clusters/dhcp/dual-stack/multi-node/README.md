@@ -30,7 +30,7 @@ The BMH definitions can be found within the `bmh-example_*.yaml` files. While th
  * Due to limitations in [nmstate](https://nmstate.io/devel/yaml_api.html#ipv6-autoconf), it is not possible to enable SLAAC but disable DHCPv6; for this reason DHCP will always be enabled in the provided examples.
  * The network configuration will only apply to the provisioned BMH and not yet on the inspection phase of the host to gather hardware information. This is due to a bug that will force the use of DHCP and RA for IPv4 and IPv6 respectively with the default settings; a resolution is expected soon.
 
-Once the required BMH file has been selected and refined, in order for it to work, it must also be filled with some values common to all the BMH definitions in addition to the network specific ones previously mentioned. For more information on these values or on how to enroll a Bare Metal Host, please refer to the main Edge Cluster documentation for multi host deployments [here](https://github.com/suse-edge/atip/tree/main/telco-examples/edge-clusters#example-2---deploy-a-multi-node-ha-cluster-using-metal3-metallb-and-the-image-generated).
+Once the required BMH file has been selected and refined, in order for it to work, it must also be filled with some values common to all the BMH definitions in addition to the network specific ones previously mentioned. For more information on these values or on how to enroll a Bare Metal Host, please refer to the main Edge Cluster documentation for multi host deployments [here](https://github.com/suse-edge/telco-cloud-examples/tree/main/telco-examples/edge-clusters#example-2---deploy-a-multi-node-ha-cluster-using-metal3-metallb-and-the-image-generated).
 
 
 ## Cluster definitions

@@ -1,13 +1,13 @@
 ## Tech-Preview AARCH64 Integration (full e2e, mgmt-cluster and downstream clusters using aarch64 architecture)
 
-This is an example to demonstrate how to deploy a management cluster for Telco using SUSE Edge for Telco (formerly known as ATIP) and the fully automated directed network provisioning using aarch64 architecture.
+This is an example to demonstrate how to deploy a management cluster for Telco using SUSE Telco Cloud and the fully automated directed network provisioning using aarch64 architecture.
 
 > [!WARNING]  
 > This is a tech-preview feature. It requires both management cluster and downstream cluster to use the same aarch64 architecture, SL Micro 6.1 and Metal3 chart to be at least 0.9.1
 
 # Management Cluster in a single-node setup (aarch64)
 
-This is an example of using Edge Image Builder (EIB) to generate a management cluster iso image for SUSE Edge for Telco. The management cluster will contain the following components:
+This is an example of using Edge Image Builder (EIB) to generate a management cluster iso image for SUSE Telco Cloud. The management cluster will contain the following components:
 - SUSE Linux Micro 6.1 Kernel (SL Micro 6.1)
 - RKE2
 - CNI plugins (e.g. Multus, Cilium)
@@ -104,7 +104,7 @@ where `ca-additional.crt` is the certificate file that you want to use to provid
 1. Clone this repo and navigate to the `telco-examples/mgmt-cluster/aarch64/eib` directory:
 
 ```bash
-$ git clone https://github.com/suse-edge/atip.git
+$ git clone https://github.com/suse-edge/telco-cloud-examples.git
 $ cd telco-examples/mgmt-cluster/aarch64/eib
 ```
 

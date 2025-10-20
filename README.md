@@ -1,18 +1,18 @@
-# SUSE Edge for Telco examples
+# SUSE Telco Cloud examples
 
-This repository contains some examples of how to deploy SUSE Edge for Telco (formerly known as ATIP) in different environments.
+This repository contains some examples of how to deploy SUSE Telco Cloud in different environments.
 
 ## Releases
 
-This repository is organized into release branches. Each release contains a set of examples that are compatible with a specific version of SUSE Edge for Telco.
+This repository is organized into release branches. Each release contains a set of examples that are compatible with a specific version of SUSE Telco Cloud.
 The following branches (releases) are available:
 
-- `main`: The latest development version of SUSE Edge for Telco.
-- `release-3.0`: [Release 3.0 of SUSE Edge for Telco](https://github.com/suse-edge/atip/tree/release-3.0)
-- `release-3.1`: [Release 3.1 of SUSE Edge for Telco](https://github.com/suse-edge/atip/tree/release-3.1)
-- `release-3.2`: [Release 3.2 of SUSE Edge for Telco](https://github.com/suse-edge/atip/tree/release-3.2)
-- `release-3.3`: [Release 3.3 of SUSE Edge for Telco](https://github.com/suse-edge/atip/tree/release-3.3)
-- `release-3.4`: [Release 3.4 of SUSE Edge for Telco](https://github.com/suse-edge/atip/tree/release-3.4)
+- `main`: The latest development version of SUSE Telco Cloud.
+- `release-3.0`: [Release 3.0 of SUSE Telco Cloud](https://github.com/suse-edge/telco-cloud-examples/tree/release-3.0)
+- `release-3.1`: [Release 3.1 of SUSE Telco Cloud](https://github.com/suse-edge/telco-cloud-examples/tree/release-3.1)
+- `release-3.2`: [Release 3.2 of SUSE Telco Cloud](https://github.com/suse-edge/telco-cloud-examples/tree/release-3.2)
+- `release-3.3`: [Release 3.3 of SUSE Telco Cloud](https://github.com/suse-edge/telco-cloud-examples/tree/release-3.3)
+- `release-3.4`: [Release 3.4 of SUSE Telco Cloud](https://github.com/suse-edge/telco-cloud-examples/tree/release-3.4)
 
 ## Scenarios
 
