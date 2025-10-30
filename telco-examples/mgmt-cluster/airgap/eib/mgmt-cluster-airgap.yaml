@@ -26,15 +26,9 @@ kubernetes:
         valuesFile: certmanager.yaml
         createNamespace: true
         installationNamespace: kube-system
-      - name: longhorn-crd
-        version: 107.0.0+up1.9.1
-        repositoryName: rancher
-        targetNamespace: longhorn-system
-        createNamespace: true
-        installationNamespace: kube-system
-      - name: longhorn
-        version: 107.0.0+up1.9.1
-        repositoryName: rancher
+      - name: suse-storage
+        version: 1.9.2
+        repositoryName: rancher-application-collection
         targetNamespace: longhorn-system
         createNamespace: true
         installationNamespace: kube-system
@@ -89,7 +83,17 @@ kubernetes:
         url: oci://registry.suse.com/edge/charts
       - name: rancher-prime
         url: https://charts.rancher.com/server-charts/prime
+      - name: rancher-application-collection
+        url: oci://dp.apps.rancher.io/charts
+        authentication:
+          username: ${APPS.RANCHER.IO_USERNAME}
+          password: ${APPS.RANCHER.IO_ACCESS_TOKEN}
 embeddedArtifactRegistry:
+  registries:
+    - uri: dp.apps.rancher.io
+      authentication:
+        username: ${APPS.RANCHER.IO_USERNAME}
+        password: ${APPS.RANCHER.IO_ACCESS_TOKEN}
   images:
     - name: registry.rancher.com/rancher/hardened-cluster-autoscaler:v1.10.2-build20250611
     - name: registry.rancher.com/rancher/hardened-cni-plugins:v1.7.1-build20250611
@@ -99,17 +103,19 @@ embeddedArtifactRegistry:
     - name: registry.rancher.com/rancher/klipper-helm:v0.9.8-build20250709
     - name: registry.rancher.com/rancher/mirrored-cilium-cilium:v1.17.6
     - name: registry.rancher.com/rancher/mirrored-cilium-operator-generic:v1.17.6
-    - name: registry.rancher.com/rancher/mirrored-longhornio-csi-attacher:v4.9.0-20250709
-    - name: registry.rancher.com/rancher/mirrored-longhornio-csi-node-driver-registrar:v2.14.0-20250709
-    - name: registry.rancher.com/rancher/mirrored-longhornio-csi-provisioner:v5.3.0-20250709
-    - name: registry.rancher.com/rancher/mirrored-longhornio-csi-resizer:v1.14.0-20250709
-    - name: registry.rancher.com/rancher/mirrored-longhornio-csi-snapshotter:v8.3.0-20250709
-    - name: registry.rancher.com/rancher/mirrored-longhornio-livenessprobe:v2.16.0-20250709
-    - name: registry.rancher.com/rancher/mirrored-longhornio-longhorn-engine:v1.9.1
-    - name: registry.rancher.com/rancher/mirrored-longhornio-longhorn-instance-manager:v1.9.1
-    - name: registry.rancher.com/rancher/mirrored-longhornio-longhorn-manager:v1.9.1
-    - name: registry.rancher.com/rancher/mirrored-longhornio-longhorn-share-manager:v1.9.1
-    - name: registry.rancher.com/rancher/mirrored-longhornio-longhorn-ui:v1.9.1
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-attacher:4.9.0-7.2
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-provisioner:5.3.0-7.6
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-resizer:1.14.0-7.6
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-snapshotter:8.3.0-7.7
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-livenessprobe:2.16.0-7.2
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-node-driver-registrar:2.14.0-7.2
+    - name: dp.apps.rancher.io/containers/longhorn-backing-image-manager:1.9.2-3.16
+    - name: dp.apps.rancher.io/containers/longhorn-engine:1.9.2-4.21
+    - name: dp.apps.rancher.io/containers/longhorn-instance-manager:1.9.2-2.33
+    - name: dp.apps.rancher.io/containers/longhorn-manager:1.9.2-6.15
+    - name: dp.apps.rancher.io/containers/longhorn-share-manager:1.9.2-2.15
+    - name: dp.apps.rancher.io/containers/longhorn-ui:1.9.2-2.11
+    - name: dp.apps.rancher.io/containers/rancher-support-bundle-kit:0.0.69-3.13
     - name: registry.rancher.com/rancher/mirrored-sig-storage-snapshot-controller:v8.2.0
     - name: registry.rancher.com/rancher/neuvector-compliance-config:1.0.6
     - name: registry.rancher.com/rancher/neuvector-controller:5.4.5
