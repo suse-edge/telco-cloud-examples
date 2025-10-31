@@ -26,15 +26,9 @@ kubernetes:
         valuesFile: certmanager.yaml
         createNamespace: true
         installationNamespace: kube-system
-      - name: longhorn-crd
-        version: 107.0.0+up1.9.1
-        repositoryName: rancher
-        targetNamespace: longhorn-system
-        createNamespace: true
-        installationNamespace: kube-system
-      - name: longhorn
-        version: 107.0.0+up1.9.1
-        repositoryName: rancher
+      - name: suse-storage
+        version: 1.9.2
+        repositoryName: rancher-application-collection
         targetNamespace: longhorn-system
         createNamespace: true
         installationNamespace: kube-system
@@ -82,3 +76,14 @@ kubernetes:
         url: oci://registry.suse.com/edge/charts
       - name: rancher-prime
         url: https://charts.rancher.com/server-charts/prime
+      - name: rancher-application-collection
+        url: oci://dp.apps.rancher.io/charts
+        authentication:
+          username: ${APPS.RANCHER.IO_USERNAME}
+          password: ${APPS.RANCHER.IO_ACCESS_TOKEN}
+embeddedArtifactRegistry:
+  registries:
+    - uri: dp.apps.rancher.io
+      authentication:
+        username: ${APPS.RANCHER.IO_USERNAME}
+        password: ${APPS.RANCHER.IO_ACCESS_TOKEN}

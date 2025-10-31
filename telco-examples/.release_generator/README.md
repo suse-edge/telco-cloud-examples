@@ -52,9 +52,9 @@ kubernetes:
         valuesFile: certmanager.yaml
         createNamespace: true
         installationNamespace: kube-system
-      - version: 106.2.0+up1.8.1
-        name: longhorn-crd
-        repositoryName: rancher
+      - version: 1.9.2
+        name: suse-storage
+        repositoryName: rancher-application-collection
         targetNamespace: longhorn-system
         createNamespace: true
         installationNamespace: kube-system

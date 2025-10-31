@@ -7,7 +7,7 @@ This is an example of using Edge Image Builder (EIB) to generate a management cl
 - CNI plugins (e.g. Multus, Cilium)
 - Rancher Prime
 - Neuvector
-- Longhorn
+- SUSE Storage (Longhorn)
 - Static IPs or DHCP network configuration
 - Metal3 and the CAPI provider (if you want to add support for aarch64 architecture, the changes will be explained in `Optional modifications` section of this document)
 
