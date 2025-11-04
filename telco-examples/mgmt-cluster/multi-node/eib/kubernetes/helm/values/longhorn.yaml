@@ -1,3 +1,6 @@
-global:
-  cattle:
-    systemDefaultRegistry: "registry.rancher.com"
+privateRegistry:
+  createSecret: true
+  registryUrl: dp.apps.rancher.io
+  registryUser: ${APPS.RANCHER.IO_USERNAME}
+  registryPasswd: ${APPS.RANCHER.IO_ACCESS_TOKEN}
+  registrySecret: rancher-app-collection
