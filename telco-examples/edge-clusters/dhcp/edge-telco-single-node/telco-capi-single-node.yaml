@@ -214,7 +214,7 @@ spec:
             - hugepagesz=1G hugepages=40
             - hugepagesz=2M hugepages=0
             - default_hugepagesz=1G
-            - irqaffinity=${NON-ISOLATED_CPU_CORES}
+            - irqaffinity=${NON_ISOLATED_CPU_CORES}
             - isolcpus=domain,nohz,managed_irq,${ISOLATED_CPU_CORES}
             - nohz_full=${ISOLATED_CPU_CORES}
             - rcu_nocbs=${ISOLATED_CPU_CORES}
@@ -222,9 +222,14 @@ spec:
             - nosoftlockup
             - nowatchdog
             - nohz=on
-            - nmi_watchdog=0 
+            - nmi_watchdog=0
             - skew_tick=1
             - quiet
+            - rcupdate.rcu_cpu_stall_suppress=1
+            - rcupdate.rcu_expedited=1
+            - rcupdate.rcu_normal_after_boot=1
+            - rcupdate.rcu_task_stall_timeout=0
+            - rcutree.kthread_prio=99
         systemd:
           units:
             - name: rke2-preinstall.service
