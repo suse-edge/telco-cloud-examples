@@ -2,7 +2,7 @@
 # Management Cluster in a single-node setup
 
 This is an example of using Edge Image Builder (EIB) to generate a management cluster iso image for SUSE Telco Cloud. The management cluster will contain the following components:
-- SUSE Linux Micro 6.1 Kernel (SL Micro 6.1)
+- SUSE Linux Micro 6.2 Kernel (SL Micro 6.2)
 - RKE2
 - CNI plugins (e.g. Multus, Cilium)
 - Rancher Prime
