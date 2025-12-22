@@ -61,17 +61,10 @@ kubernetes:
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: rancher.yaml
-      - name: rancher-turtles
-        version: 304.0.6+up0.24.0
+      - name: rancher-turtles-providers
+        version: 305.0.4+up0.25.1
         repositoryName: suse-edge-charts
-        targetNamespace: rancher-turtles-system
-        createNamespace: true
-        installationNamespace: kube-system
-        valuesFile: turtles.yaml
-      - name: rancher-turtles-airgap-resources
-        version: 304.0.6+up0.24.0
-        repositoryName: suse-edge-charts
-        targetNamespace: rancher-turtles-system
+        targetNamespace: cattle-turtles-system
         createNamespace: true
         installationNamespace: kube-system
     repositories:
