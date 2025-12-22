@@ -81,6 +81,8 @@ def build_release_versions(manifest):
             versions[addon["releaseName"]] = addon["version"]
     k8s_version = manifest.get("spec", {}).get("components", {}).get("kubernetes", {}).get("rke2", {}).get("version")
     versions["__k8s_version__"] = k8s_version
+    os_version = manifest.get("spec", {}).get("components", {}).get("operatingSystem", {}).get("version")
+    versions["__os_version__"] = os_version
     return versions
 
 def build_image_map(images_yaml):
@@ -127,6 +129,43 @@ def update_versions_in_mgmt_file(doc, release_versions, image_map):
                 replace_images(item)
 
     replace_images(doc)
+
+def update_versions_in_readme(doc_path, release_versions, image_map):
+    with open(doc_path, "r") as f:
+        doc = f.read()
+
+    image_ref_regex=re.compile(
+        r"\b(?P<full_name>[a-z0-9]+(?:(?:\.|_|__|-+)[a-z0-9]+)*(?:\/(?P<name>[a-z0-9]+(?:(?:\.|_|__|-+)[a-z0-9]+)*))+)"
+        r":(?P<tag>[a-zA-Z0-9_][a-zA-Z0-9._-]{0,127})\b"
+    )
+    chart_ref_regex=re.compile(
+        r"\b(?P<full_name>[a-z0-9]+(?:(?:\.|_|__|-+)[a-z0-9]+)*(?:\/charts/(?P<name>[a-z0-9]+(?:(?:\.|_|__|-+)[a-z0-9]+)*))+)"
+        r":(?P<tag>[a-zA-Z0-9_][a-zA-Z0-9._+-]{0,127})\b"
+    )
+    sl_micro_regex=re.compile(r"((?:SUSE Linux|SL) Micro) \d+\.\d+")
+
+    def replace_image(match):
+        name = match.group("name")
+        if name in image_map:
+            if "." in match.group("full_name"):
+                return image_map[name]
+            else: # correctly handle edge-save-images.sh expected input
+                return f"{image_map[name].split('/', 1)[-1]}"
+
+        return match.group(0)
+    
+    def replace_chart(match):
+        name = match.group("name")
+        if name in release_versions:
+            return f"{match.group('full_name')}:{release_versions[name]}"
+        return match.group(0)
+
+    doc = image_ref_regex.sub(replace_image, doc)
+    doc = chart_ref_regex.sub(replace_chart, doc)
+    doc = sl_micro_regex.sub(rf"\1 {release_versions['__os_version__']}", doc)
+
+    with open(doc_path, "w") as f:
+        f.write(doc)
 
 def preserve_placeholders(yaml_text):
     """
@@ -301,6 +340,8 @@ def main():
         for file in files:
             if file.endswith(".yaml") or file.endswith(".yml"):
                 process_yaml_file(os.path.join(root, file), release_versions, image_map)
+            elif file == "README.md":
+                update_versions_in_readme(os.path.join(root, file), release_versions, image_map)
 
 
 if __name__ == "__main__":
