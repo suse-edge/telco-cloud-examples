@@ -7,7 +7,6 @@ image:
 operatingSystem:
   kernelArgs:
     - ignition.platform.id=openstack
-    - net.ifnames=1
   systemd:
     disable:
       - rebootmgr
