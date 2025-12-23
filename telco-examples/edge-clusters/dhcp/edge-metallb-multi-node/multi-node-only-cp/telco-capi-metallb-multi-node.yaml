@@ -38,6 +38,8 @@ kind: RKE2ControlPlane
 metadata:
   name: multinode-cluster
   namespace: default
+  annotations:
+    rke2.controlplane.cluster.x-k8s.io/load-balancer-exclusion: "true"
 spec:
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
