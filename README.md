@@ -13,6 +13,7 @@ The following branches (releases) are available:
 - `release-3.2`: [Release 3.2 of SUSE Telco Cloud](https://github.com/suse-edge/telco-cloud-examples/tree/release-3.2)
 - `release-3.3`: [Release 3.3 of SUSE Telco Cloud](https://github.com/suse-edge/telco-cloud-examples/tree/release-3.3)
 - `release-3.4`: [Release 3.4 of SUSE Telco Cloud](https://github.com/suse-edge/telco-cloud-examples/tree/release-3.4)
+- `release-3.5`: [Release 3.5 of SUSE Telco Cloud](https://github.com/suse-edge/telco-cloud-examples/tree/release-3.5)
 
 ## Scenarios
 

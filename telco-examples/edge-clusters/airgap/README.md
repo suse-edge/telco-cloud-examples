@@ -70,15 +70,15 @@ The following steps are required to prepare the airgap artifacts:
   - You need to create a list with the Helm charts required for the edge cluster. For example, for telco scenarios, you can use the following list:
     ``` 
     $ cat > edge-release-helm-oci-artifacts.txt <<EOF
-    edge/charts/sriov-network-operator:304.0.2+up1.5.0
-    edge/charts/sriov-crd:304.0.2+up1.5.0
+    edge/charts/sriov-network-operator:305.0.4+up1.6.0
+    edge/charts/sriov-crd:305.0.4+up1.6.0
     EOF
     ```
   - Using the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.4/scripts/day2/edge-save-oci-artefacts.sh) and the list created above, you can generate a tarball containing all necessary Helm charts locally.
     ```
     $ ./edge-save-oci-artefacts.sh -al ./edge-release-helm-oci-artifacts.txt -s registry.suse.com
-    Pulled: registry.suse.com/edge/charts/sriov-network-operator:304.0.2+up1.5.0
-    Pulled: registry.suse.com/edge/charts/sriov-crd:304.0.2+up1.5.0
+    Pulled: registry.suse.com/edge/charts/sriov-network-operator:305.0.4+up1.6.0
+    Pulled: registry.suse.com/edge/charts/sriov-crd:305.0.4+up1.6.0
     a edge-release-oci-tgz-20250120
     a edge-release-oci-tgz-20250120/sriov-network-operator-304.0.2+up1.5.0.tgz
     a edge-release-oci-tgz-20250120/sriov-crd-304.0.2+up1.5.0.tgz
