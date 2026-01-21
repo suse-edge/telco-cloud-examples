@@ -16,12 +16,12 @@ operatingSystem:
       - openssh-server-config-rootlogin
     sccRegistrationCode: ${SCC_REGISTRATION_CODE}
 kubernetes:
-  version: v1.33.3+rke2r1
+  version: v1.34.2+rke2r1
   helm:
     charts:
       - name: cert-manager
         repositoryName: jetstack
-        version: 1.18.2
+        version: 1.19.2
         targetNamespace: cert-manager
         valuesFile: certmanager.yaml
         createNamespace: true
@@ -34,28 +34,28 @@ kubernetes:
         installationNamespace: kube-system
         valuesFile: longhorn.yaml
       - name: metal3
-        version: 304.0.16+up0.12.6
+        version: 305.0.21+up0.13.0
         repositoryName: suse-edge-charts
         targetNamespace: metal3-system
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: metal3.yaml
       - name: neuvector-crd
-        version: 107.0.0+up2.8.7
+        version: 108.0.1+up2.8.10
         repositoryName: rancher
         targetNamespace: neuvector
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: neuvector.yaml
       - name: neuvector
-        version: 107.0.0+up2.8.7
+        version: 108.0.1+up2.8.10
         repositoryName: rancher
         targetNamespace: neuvector
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: neuvector.yaml
       - name: rancher
-        version: 2.12.1
+        version: 2.13.1
         repositoryName: rancher-prime
         targetNamespace: cattle-system
         createNamespace: true

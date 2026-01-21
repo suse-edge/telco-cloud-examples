@@ -41,7 +41,7 @@ You need to modify the following folder:
 
 ```
 mkdir output
-sudo podman run --privileged -v /etc/zypp/repos.d:/micro-sdk/repos/ -v $(pwd)/output:/tmp/output -it registry.suse.com/edge/3.4/kiwi-builder:10.2.12.0 build-image -p Default-SelfInstall
+sudo podman run --privileged -v /etc/zypp/repos.d:/micro-sdk/repos/ -v $(pwd)/output:/tmp/output -it registry.suse.com/edge/3.5/kiwi-builder:10.2.29.1 build-image -p Default-SelfInstall
 ```
 
 The resulting iso image needs to be copied over to the `base-image` folder and used as a reference in the `eib/telco-edge-cluster.yaml` file:
@@ -50,7 +50,7 @@ The resulting iso image needs to be copied over to the `base-image` folder and u
 cp $(pwd)/output/*.iso base-images/
 ```
 
-> **_Note:_** For more information about this process you can follow the [full guide instructions in official docs](https://documentation.suse.com/suse-edge/3.4/html/edge/guides-kiwi-builder-images.html)
+> **_Note:_** For more information about this process you can follow the [full guide instructions in official docs](https://documentation.suse.com/suse-edge/3.5/html/edge/guides-kiwi-builder-images.html)
 
 ## Optional modifications
 
@@ -106,7 +106,7 @@ $ cd telco-examples/mgmt-cluster/airgap/eib
 
 ```bash
 $ sudo podman run --rm --privileged -it -v $PWD:/eib \
-registry.suse.com/edge/3.4/edge-image-builder:1.3.0 \
+registry.suse.com/edge/3.5/edge-image-builder:1.3.2 \
 build --definition-file mgmt-cluster-airgap.yaml
 ```
 

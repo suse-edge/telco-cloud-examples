@@ -103,7 +103,7 @@ spec:
                   spec:
                     chart: oci://registry.suse.com/edge/charts/sriov-crd
                     targetNamespace: sriov-network-operator
-                    version: 304.0.2+up1.5.0
+                    version: 305.0.4+up1.6.0
                     createNamespace: true
             - path: /var/lib/rancher/rke2/server/manifests/sriov-network-operator.yaml
               overwrite: true
@@ -117,7 +117,7 @@ spec:
                   spec:
                     chart: oci://registry.suse.com/edge/charts/sriov-network-operator
                     targetNamespace: sriov-network-operator
-                    version: 304.0.2+up1.5.0
+                    version: 305.0.4+up1.6.0
                     createNamespace: true
         kernel_arguments:
           should_exist:
