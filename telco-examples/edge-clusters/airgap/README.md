@@ -34,7 +34,7 @@ You need to modify the following folder:
 
 ```
 mkdir output
-sudo podman run --privileged -v /etc/zypp/repos.d:/micro-sdk/repos/ -v $(pwd)/output:/tmp/output -it registry.suse.com/edge/3.4/kiwi-builder:10.2.12.0 build-image -p Base-RT-SelfInstall
+sudo podman run --privileged -v /etc/zypp/repos.d:/micro-sdk/repos/ -v $(pwd)/output:/tmp/output -it registry.suse.com/edge/3.5/kiwi-builder:10.2.29.1 build-image -p Base-RT-SelfInstall
 ```
 
 The resulting raw image needs to be copied over to the `base-image` folder and used as a reference in the `eib/telco-edge-cluster.yaml` file:
@@ -43,7 +43,7 @@ The resulting raw image needs to be copied over to the `base-image` folder and u
 cp $(pwd)/output/*.raw base-images/
 ```
 
-> **_Note:_** For more information about this process you can follow the [full guide instructions in official docs](https://documentation.suse.com/suse-edge/3.4/html/edge/guides-kiwi-builder-images.html)
+> **_Note:_** For more information about this process you can follow the [full guide instructions in official docs](https://documentation.suse.com/suse-edge/3.5/html/edge/guides-kiwi-builder-images.html)
 
 
 ### Preparing the airgap artifacts
@@ -51,7 +51,7 @@ cp $(pwd)/output/*.raw base-images/
 The following steps are required to prepare the airgap artifacts:
 
 1.Include the rke2 release images to the `custom/files` folder to be consumed by EIB during the build process. 
-  - You can use the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.4/scripts/day2/edge-save-rke2-images.sh) and the list of images [here](https://github.com/suse-edge/fleet-examples/blob/release-3.4/scripts/day2/edge-release-rke2-images.txt) to generate the artifacts required to be included in `custom/files`. 
+  - You can use the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.5/scripts/day2/edge-save-rke2-images.sh) and the list of images [here](https://github.com/suse-edge/fleet-examples/blob/release-3.5/scripts/day2/edge-release-rke2-images.txt) to generate the artifacts required to be included in `custom/files`. 
   ```
   $ ./edge-save-rke2-images.sh -o ~/telco-examples/edge-clusters/airgap/eib/custom/files -l ~/edge-release-rke2-images.txt
   ...
@@ -74,7 +74,7 @@ The following steps are required to prepare the airgap artifacts:
     edge/charts/sriov-crd:305.0.4+up1.6.0
     EOF
     ```
-  - Using the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.4/scripts/day2/edge-save-oci-artefacts.sh) and the list created above, you can generate a tarball containing all necessary Helm charts locally.
+  - Using the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.5/scripts/day2/edge-save-oci-artefacts.sh) and the list created above, you can generate a tarball containing all necessary Helm charts locally.
     ```
     $ ./edge-save-oci-artefacts.sh -al ./edge-release-helm-oci-artifacts.txt -s registry.suse.com
     Pulled: registry.suse.com/edge/charts/sriov-network-operator:305.0.4+up1.6.0
@@ -83,7 +83,7 @@ The following steps are required to prepare the airgap artifacts:
     a edge-release-oci-tgz-20250120/sriov-network-operator-304.0.2+up1.5.0.tgz
     a edge-release-oci-tgz-20250120/sriov-crd-304.0.2+up1.5.0.tgz
     ```
-  - Upload your tarball to your private registry to preload with the helm chart oci images downloaded using the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.4/scripts/day2/edge-load-oci-artefacts.sh):
+  - Upload your tarball to your private registry to preload with the helm chart oci images downloaded using the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.5/scripts/day2/edge-load-oci-artefacts.sh):
     ```
     $ tar zxvf edge-release-oci-tgz-20250120.tgz
     $ ./edge-load-oci-artefacts.sh -ad edge-release-oci-tgz-20250120 -r myregistry:5000
@@ -102,7 +102,7 @@ The following steps are required to prepare the airgap artifacts:
     rancher/hardened-sriov-network-webhook:v1.5.0-build20250402
     EOF
     ```
-  - Using the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.4/scripts/day2/edge-save-images.sh) and the list created above, you can generate in local the tarball with the images required for the edge cluster.
+  - Using the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.5/scripts/day2/edge-save-images.sh) and the list created above, you can generate in local the tarball with the images required for the edge cluster.
     ```
     $ ./edge-save-images.sh -l ./edge-release-images.txt -s registry.suse.com
     Image pull success: registry.suse.com/rancher/hardened-sriov-network-operator:v1.5.0-build20250425
@@ -115,7 +115,7 @@ The following steps are required to prepare the airgap artifacts:
     Creating edge-images.tar.gz with 7 images
     ```
     
-  - Upload your tarball to your private registry to preload with the images downloaded in the previous step using the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.4/scripts/day2/edge-load-images.sh)
+  - Upload your tarball to your private registry to preload with the images downloaded in the previous step using the [following script](https://github.com/suse-edge/fleet-examples/blob/release-3.5/scripts/day2/edge-load-images.sh)
 
 
 ### Building the Edge Cluster Image using EIB
@@ -127,7 +127,7 @@ All the following commands in this section could be executed on any x86_64 Linux
 ```
 $ cd telco-examples/edge-clusters/airgap/eib
 $ sudo podman run --rm --privileged -it -v $PWD:/eib \
-registry.suse.com/edge/3.4/edge-image-builder:1.3.0 \
+registry.suse.com/edge/3.5/edge-image-builder:1.3.2 \
 build --definition-file telco-edge-airgap-cluster.yaml
 ```
 

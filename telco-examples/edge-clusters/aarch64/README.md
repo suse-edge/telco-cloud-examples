@@ -26,7 +26,7 @@ You need to modify the following folder:
 
 ```
 mkdir output
-sudo podman run --privileged -v /etc/zypp/repos.d:/micro-sdk/repos/ -v $(pwd)/output:/tmp/output -it registry.suse.com/edge/3.4/kiwi-builder:10.2.12.0 build-image -p Base-RT-SelfInstall
+sudo podman run --privileged -v /etc/zypp/repos.d:/micro-sdk/repos/ -v $(pwd)/output:/tmp/output -it registry.suse.com/edge/3.5/kiwi-builder:10.2.29.1 build-image -p Base-RT-SelfInstall
 ```
 
 The resulting raw image needs to be copied over to the `base-image` folder and used as a reference in the `eib/telco-edge-cluster.yaml` file:
@@ -35,7 +35,7 @@ The resulting raw image needs to be copied over to the `base-image` folder and u
 cp $(pwd)/output/*.raw base-images/
 ```
 
-> **_Note:_** For more information about this process you can follow the [full guide instructions in official docs](https://documentation.suse.com/suse-edge/3.4/html/edge/guides-kiwi-builder-images.html)
+> **_Note:_** For more information about this process you can follow the [full guide instructions in official docs](https://documentation.suse.com/suse-edge/3.5/html/edge/guides-kiwi-builder-images.html)
 
 ### Building the Edge Cluster Image using EIB
 
@@ -46,7 +46,7 @@ All the following commands in this section could be executed using any linux lap
 ```
 $ cd telco-examples/edge-clusters/aarch64/eib
 $ sudo podman run --rm --privileged -it -v $PWD:/eib \
-registry.suse.com/edge/3.4/edge-image-builder:1.3.0 \
+registry.suse.com/edge/3.5/edge-image-builder:1.3.2 \
 build --definition-file telco-edge-cluster-aarch64.yaml
 ```
 
