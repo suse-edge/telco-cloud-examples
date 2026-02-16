@@ -22,7 +22,7 @@ operatingSystem:
       - jq
       - dpdk
       - dpdk-tools
-      - libdpdk-23
+      - libdpdk-25
       - pf-bb-config
       - open-iscsi
       - tuned
