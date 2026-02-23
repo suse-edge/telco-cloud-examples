@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Script generate to tuning the performance of the system for running Telco Workloads
+# Script generate to tune the performance of the system for running Telco Workloads
 # This script is intended to be run on a worker node in a Telco Edge Cluster
 
 if [ "$(whoami)" != "root" ]; then
-        echo root required to quiten machine
+        echo root required to run the script
         exit 127
 fi
 
