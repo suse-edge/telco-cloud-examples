@@ -28,7 +28,7 @@ kubernetes:
         createNamespace: true
         installationNamespace: kube-system
       - name: suse-storage
-        version: 1.9.2
+        version: 1.10.1
         repositoryName: rancher-application-collection
         targetNamespace: longhorn-system
         createNamespace: true
