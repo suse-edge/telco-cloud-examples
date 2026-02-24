@@ -1,4 +1,4 @@
-apiVersion: 1.0
+apiVersion: 1.3
 image:
   imageType: iso
   arch: aarch64
@@ -13,6 +13,7 @@ operatingSystem:
   packages:
     packageList:
       - jq
+      - open-iscsi
       - openssh-server-config-rootlogin
     sccRegistrationCode: ${SCC_REGISTRATION_CODE}
 kubernetes:
