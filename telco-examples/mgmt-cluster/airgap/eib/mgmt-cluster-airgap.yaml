@@ -103,13 +103,13 @@ embeddedArtifactRegistry:
     - name: dp.apps.rancher.io/containers/kubernetes-csi-external-snapshotter:8.4.0-8.9
     - name: dp.apps.rancher.io/containers/kubernetes-csi-livenessprobe:2.17.0-8.8
     - name: dp.apps.rancher.io/containers/kubernetes-csi-node-driver-registrar:2.15.0-8.8
-    - name: dp.apps.rancher.io/containers/longhorn-backing-image-manager:1.9.2-3.16
+    - name: dp.apps.rancher.io/containers/longhorn-backing-image-manager:1.10.1-1.11
     - name: dp.apps.rancher.io/containers/longhorn-engine:1.10.1-1.16
     - name: dp.apps.rancher.io/containers/longhorn-instance-manager:1.10.1-1.17
     - name: dp.apps.rancher.io/containers/longhorn-manager:1.10.1-1.9
     - name: dp.apps.rancher.io/containers/longhorn-share-manager:1.10.1-1.8
     - name: dp.apps.rancher.io/containers/longhorn-ui:1.10.1-1.8
-    - name: dp.apps.rancher.io/containers/rancher-support-bundle-kit:0.0.69-3.13
+    - name: dp.apps.rancher.io/containers/rancher-support-bundle-kit:0.0.71-4.13
     - name: registry.rancher.com/rancher/mirrored-sig-storage-snapshot-controller:v8.2.0
     - name: registry.rancher.com/rancher/neuvector-compliance-config:1.0.9
     - name: registry.rancher.com/rancher/neuvector-controller:5.4.8
