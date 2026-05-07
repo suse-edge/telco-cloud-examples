@@ -1,9 +1,4 @@
-# This is the cluster instance for the cluster class example-clusterclass template definition.
-# Applying this will create a cluster with the name emea-spa-cluster-1 in the emea-spa namespace.
-# Only contains the information needed to create the cluster, because the rest of the information is in the cluster class definition.
-# To select the clusterclass to be used, the class name is specified in the topology section.
----
-apiVersion: cluster.x-k8s.io/v1beta1
+apiVersion: cluster.x-k8s.io/v1beta2
 kind: Cluster
 metadata:
   name: emea-spa-cluster-1
@@ -12,27 +7,29 @@ metadata:
     cluster-api.cattle.io/rancher-auto-import: "true"
 spec:
   topology:
-    class: example-clusterclass      # ClusterClass name to be used. It should be the same as the one used in the ClusterClass definition.
+    classRef:
+      name: example-clusterclass
+      namespace: emea-spa
     version: ${RKE2_VERSION}
     controlPlane:
       replicas: 1
     variables:                       # Values to be replaced in the clusterclass template variables to create this specific cluster.
-      - name: controlPlaneMachineTemplate
-        value: emea-spa-cluster-1-machinetemplate
-      - name: controlPlaneEndpointHost
-        value: ${CONTROL_PLANE_ENDPOINT_HOST}
-      - name: tlsSan
-        value:
-          - ${CONTROL_PLANE_ENDPOINT_HOST}
-          - https://${CONTROL_PLANE_ENDPOINT_HOST}.sslip.io
+    - name: controlPlaneMachineTemplate
+      value: emea-spa-cluster-1-machinetemplate
+    - name: controlPlaneEndpointHost
+      value: ${CONTROL_PLANE_ENDPOINT_HOST}
+    - name: tlsSan
+      value:
+      - ${CONTROL_PLANE_ENDPOINT_HOST}
+      - https://${CONTROL_PLANE_ENDPOINT_HOST}.sslip.io
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3MachineTemplate
 metadata:
   name: emea-spa-cluster-1-machinetemplate
   namespace: emea-spa
 spec:
-  nodeReuse: True
+  nodeReuse: true
   template:
     spec:
       automatedCleaningMode: metadata
@@ -49,7 +46,7 @@ spec:
         format: raw
         url: http://imagecache.local:8080/eibimage-downstream-cluster.raw
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3DataTemplate
 metadata:
   name: emea-spa-cluster-1
@@ -58,7 +55,7 @@ spec:
   clusterName: emea-spa-cluster-1
   metaData:
     objectNames:
-      - key: name
-        object: machine
-      - key: local-hostname
-        object: machine
+    - key: name
+      object: machine
+    - key: local-hostname
+      object: machine

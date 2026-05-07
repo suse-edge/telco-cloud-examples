@@ -1,4 +1,4 @@
-apiVersion: cluster.x-k8s.io/v1beta1
+apiVersion: cluster.x-k8s.io/v1beta2
 kind: Cluster
 metadata:
   name: multinode-cluster
@@ -9,20 +9,20 @@ spec:
   clusterNetwork:
     pods:
       cidrBlocks:
-        - 192.168.0.0/18
+      - 192.168.0.0/18
     services:
       cidrBlocks:
-        - 10.96.0.0/12
+      - 10.96.0.0/12
   controlPlaneRef:
-    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta2
     kind: RKE2ControlPlane
     name: multinode-cluster
   infrastructureRef:
-    apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
     kind: Metal3Cluster
     name: multinode-cluster
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3Cluster
 metadata:
   name: multinode-cluster
@@ -35,7 +35,7 @@ spec:
 
 ## Control Plane
 ---
-apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+apiVersion: controlplane.cluster.x-k8s.io/v1beta2
 kind: RKE2ControlPlane
 metadata:
   name: multinode-cluster
@@ -43,10 +43,11 @@ metadata:
   annotations:
     rke2.controlplane.cluster.x-k8s.io/load-balancer-exclusion: "true"
 spec:
-  infrastructureRef:
-    apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
-    kind: Metal3MachineTemplate
-    name: multinode-cluster-controlplane
+  machineTemplate:
+    infrastructureRef:
+      apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+      kind: Metal3MachineTemplate
+      name: multinode-cluster-controlplane
   replicas: 3
   version: ${RKE2_VERSION}
   rolloutStrategy:
@@ -58,8 +59,8 @@ spec:
   serverConfig:
     cni: cilium
     tlsSan:
-      - ${EDGE_VIP_ADDRESS}
-      - https://${EDGE_VIP_ADDRESS}.sslip.io
+    - ${EDGE_VIP_ADDRESS}
+    - https://${EDGE_VIP_ADDRESS}.sslip.io
   agentConfig:
     format: ignition
     additionalUserData:
@@ -168,10 +169,10 @@ spec:
                     type: LoadBalancer
     kubelet:
       extraArgs:
-        - provider-id=metal3://BAREMETALHOST_UUID
+      - provider-id=metal3://BAREMETALHOST_UUID
     nodeName: "Node-multinode-cluster"
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3MachineTemplate
 metadata:
   name: multinode-cluster-controlplane
@@ -190,7 +191,7 @@ spec:
         format: raw
         url: http://imagecache.local:8080/eibimage-slmicro-rt-telco.raw
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3DataTemplate
 metadata:
   name: multinode-cluster-controlplane-template
@@ -199,15 +200,15 @@ spec:
   clusterName: multinode-cluster
   metaData:
     objectNames:
-      - key: name
-        object: machine
-      - key: local-hostname
-        object: machine
-      - key: local_hostname
-        object: machine
+    - key: name
+      object: machine
+    - key: local-hostname
+      object: machine
+    - key: local_hostname
+      object: machine
 ## Workers
 ---
-apiVersion: cluster.x-k8s.io/v1beta1
+apiVersion: cluster.x-k8s.io/v1beta2
 kind: MachineDeployment
 metadata:
   labels:
@@ -230,18 +231,19 @@ spec:
     spec:
       bootstrap:
         configRef:
-          apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+          apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
           kind: RKE2ConfigTemplate
           name: multinode-cluster-workers
       clusterName: multinode-cluster
       infrastructureRef:
-        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
         kind: Metal3MachineTemplate
         name: multinode-cluster-workers
-      nodeDrainTimeout: 0s
+      deletion:
+        nodeDrainTimeoutSeconds: 0
       version: ${RKE2_VERSION}
 ---
-apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
 kind: RKE2ConfigTemplate
 metadata:
   name: multinode-cluster-workers
@@ -253,7 +255,7 @@ spec:
         format: ignition
         kubelet:
           extraArgs:
-            - provider-id=metal3://BAREMETALHOST_UUID
+          - provider-id=metal3://BAREMETALHOST_UUID
         nodeName: "Node-multinode-cluster-worker"
         additionalUserData:
           config: |
@@ -279,7 +281,7 @@ spec:
                     [Install]
                     WantedBy=multi-user.target
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3MachineTemplate
 metadata:
   name: multinode-cluster-workers
@@ -298,7 +300,7 @@ spec:
         format: raw
         url: http://imagecache.local:8080/eibimage-slmicro-rt-telco.raw
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3DataTemplate
 metadata:
   name: multinode-cluster-workers-template
@@ -307,9 +309,9 @@ spec:
   clusterName: multinode-cluster
   metaData:
     objectNames:
-      - key: name
-        object: machine
-      - key: local-hostname
-        object: machine
-      - key: local_hostname
-        object: machine
+    - key: name
+      object: machine
+    - key: local-hostname
+      object: machine
+    - key: local_hostname
+      object: machine
