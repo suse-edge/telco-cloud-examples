@@ -31,7 +31,7 @@ spec:
   controlPlaneEndpoint:
     host: ${EDGE_VIP_ADDRESS}
     port: 6443
-  noCloudProvider: true
+  cloudProviderEnabled: false
 
 ## Control Plane
 ---

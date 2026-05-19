@@ -245,4 +245,4 @@ spec:
       controlPlaneEndpoint:
         host: "TO_BE_REPLACED"  # This will be replaced by the patch when apply the cluster instance
         port: 6443
-      noCloudProvider: true
+      cloudProviderEnabled: false

@@ -33,7 +33,7 @@ spec:
   controlPlaneEndpoint:
     host: ${EDGE_CONTROL_PLANE_IP_V4}
     port: 6443
-  noCloudProvider: true
+  cloudProviderEnabled: false
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1beta2
 kind: RKE2ControlPlane
