@@ -210,7 +210,6 @@ spec:
             apiGroup: infrastructure.cluster.x-k8s.io
             kind: Metal3MachineTemplate
             name: example-controlplane  # This will be replaced by the patch when apply the cluster instance
-            namespace: emea-spa
       replicas: 1
       version: ${RKE2_VERSION}
       rolloutStrategy:
