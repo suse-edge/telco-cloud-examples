@@ -40,10 +40,11 @@ metadata:
   namespace: default
 spec:
   machineTemplate:
-    infrastructureRef:
-      apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
-      kind: Metal3MachineTemplate
-      name: test-cluster-minimal-controlplane
+    spec:
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        kind: Metal3MachineTemplate
+        name: test-cluster-minimal-controlplane
   replicas: 1
   agentConfig:
     format: ignition

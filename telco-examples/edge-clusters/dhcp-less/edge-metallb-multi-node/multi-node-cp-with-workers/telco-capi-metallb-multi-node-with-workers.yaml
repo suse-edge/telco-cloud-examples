@@ -44,10 +44,11 @@ metadata:
     rke2.controlplane.cluster.x-k8s.io/load-balancer-exclusion: "true"
 spec:
   machineTemplate:
-    infrastructureRef:
-      apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
-      kind: Metal3MachineTemplate
-      name: multinode-cluster-controlplane
+    spec:
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        kind: Metal3MachineTemplate
+        name: multinode-cluster-controlplane
   replicas: 3
   version: ${RKE2_VERSION}
   rolloutStrategy:
