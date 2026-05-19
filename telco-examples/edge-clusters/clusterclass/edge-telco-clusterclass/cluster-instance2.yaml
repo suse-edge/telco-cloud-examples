@@ -23,7 +23,7 @@ spec:
       - ${CONTROL_PLANE_ENDPOINT_HOST}
       - https://${CONTROL_PLANE_ENDPOINT_HOST}.sslip.io
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: Metal3MachineTemplate
 metadata:
   name: emea-spa-cluster-2-machinetemplate
@@ -46,7 +46,7 @@ spec:
         format: raw
         url: http://imagecache.local:8080/eibimage-downstream-cluster.raw
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: Metal3DataTemplate
 metadata:
   name: emea-spa-cluster-2

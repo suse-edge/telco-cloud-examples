@@ -20,11 +20,11 @@ spec:
     kind: RKE2ControlPlane
     name: multinode-cluster
   infrastructureRef:
-    apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: Metal3Cluster
     name: multinode-cluster
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: Metal3Cluster
 metadata:
   name: multinode-cluster
@@ -44,7 +44,7 @@ spec:
   machineTemplate:
     spec:
       infrastructureRef:
-        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: Metal3MachineTemplate
         name: multinode-cluster-controlplane
   replicas: 2
@@ -186,7 +186,7 @@ spec:
       - provider-id=metal3://BAREMETALHOST_UUID
     nodeName: "localhost.localdomain"
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: Metal3MachineTemplate
 metadata:
   name: multinode-cluster-controlplane
@@ -210,7 +210,7 @@ spec:
         format: raw
         url: http://imagecache.local:8080/eibimage-slmicro-rt.raw
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: Metal3DataTemplate
 metadata:
   name: multinode-cluster-controlplane-template

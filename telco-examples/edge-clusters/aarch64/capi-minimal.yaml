@@ -18,11 +18,11 @@ spec:
     kind: RKE2ControlPlane
     name: test-cluster-minimal
   infrastructureRef:
-    apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: Metal3Cluster
     name: test-cluster-minimal
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: Metal3Cluster
 metadata:
   name: test-cluster-minimal
@@ -42,7 +42,7 @@ spec:
   machineTemplate:
     spec:
       infrastructureRef:
-        apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+        apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: Metal3MachineTemplate
         name: test-cluster-minimal-controlplane
   replicas: 1
@@ -77,7 +77,7 @@ spec:
     version: ${RKE2_VERSION}
     nodeName: "localhost.localdomain"
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: Metal3MachineTemplate
 metadata:
   name: test-cluster-minimal-controlplane
@@ -96,7 +96,7 @@ spec:
         format: raw
         url: http://imagecache.local:8080/eibimage-slmicro-rt-telco-arm.raw
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: Metal3DataTemplate
 metadata:
   name: test-cluster-minimal-controlplane-template
