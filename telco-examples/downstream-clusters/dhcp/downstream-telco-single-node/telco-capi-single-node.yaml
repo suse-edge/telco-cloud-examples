@@ -280,20 +280,20 @@ spec:
                 ExecStart=/bin/sh -c "/opt/performance-settings/performance-settings.sh"
                 [Install]
                 WantedBy=multi-user.target
-            - name: dpdk-vf-creation.service
+            - name: dpdk-bbdev-vf-creation.service
               enabled: true
               contents: |
                 [Unit]
-                Description=DPDK VF creation service
+                Description=DPDK-BBDEV PF config and VF creation service
                 Wants=network-online.target  rke2-server.target
                 After=network.target network-online.target rke2-server.target
                 [Service]
                 User=root
                 Type=forking
                 TimeoutStartSec=900
-                ExecStart=/bin/sh -c "dpdk-devbind.py -b vfio-pci ${DPDK_PCI_ADDRESS}"
-                ExecStartPost=/bin/sh -c "echo 1 > /sys/bus/pci/devices/${DPDK_PCI_ADDRESS}/sriov_numvfs"
-                ExecStartPost=/bin/sh -c "pf_bb_config ACC200 -v 00112233-4455-6677-8899-aabbccddeeff -c /opt/pf-bb-config/acc200_config_vf_5g.cfg; sleep 2"
+                ExecStart=/bin/sh -c "dpdk-devbind.py -b vfio-pci ${DPDK_ACC_PCI_ADDRESS}"
+                ExecStartPost=/bin/sh -c "echo 1 > /sys/bus/pci/devices/${DPDK_ACC_PCI_ADDRESS}/sriov_numvfs"
+                ExecStartPost=/bin/sh -c "pf_bb_config VRB1 -v 00112233-4455-6677-8899-aabbccddeeff -c /usr/share/pf-bb-config/examples/vrb1/vrb1_config_vf_5g.cfg -f /usr/share/pf-bb-config/examples/vrb1/srs_fft_windows_coefficient.bin -p ${DPDK_ACC_PCI_ADDRESS}; sleep 2"
                 RemainAfterExit=yes
                 KillMode=process
                 [Install]
