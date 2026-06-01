@@ -55,8 +55,6 @@ spec:
   serverConfig:
     cni: calico
     cniMultusEnable: true
-  preRKE2Commands:
-  - modprobe vfio-pci enable_sriov=1 disable_idle_d3=1
   agentConfig:
     format: ignition
     additionalUserData:
