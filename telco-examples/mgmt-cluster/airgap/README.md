@@ -34,7 +34,35 @@ You need to modify the `${MGMT_CLUSTER_IP}` with the Node IP in the following fi
 
 - `kubernetes/helm/values/metal3.yaml`
 
-- `kubernetes/helm/values/rancher.yaml`
+## Rancher Hostname Configuration in Air-Gapped Environments
+
+This example uses **Option 1 (Recommended)**: Configure your internal DNS server to resolve the Rancher hostname.
+
+In `kubernetes/helm/values/rancher.yaml`, replace `your-domain.internal` with your actual internal domain:
+
+```yaml
+hostname: rancher.your-domain.internal
+```
+
+Make sure your DNS server resolves `rancher.your-domain.internal` to the appropriate IP address.
+
+### Alternative Option 2: Static /etc/hosts Injection
+
+If internal DNS is not available, you can inject static entries via EIB by creating `eib/os-files/etc/hosts`:
+
+```shell
+# Static DNS resolution for Rancher in air-gapped environment
+${INGRESS_VIP} rancher-${INGRESS_VIP}.sslip.io
+```
+
+Then update `kubernetes/helm/values/rancher.yaml`:
+
+```yaml
+hostname: rancher-${INGRESS_VIP}.sslip.io
+```
+
+> **_IMPORTANT:_**  
+> With Option 2, the `/etc/hosts` file will need to be present on any system that needs to access the Rancher UI, not just the management cluster nodes.
 
 You need to modify the `${MGMT_CLUSTER_REGISTRY_IP}` with a reserved static IP for the SUSE Private Registry in the following file:
 
