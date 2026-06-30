@@ -1,4 +1,4 @@
-hostname: rancher-${MGMT_CLUSTER_IP}.sslip.io
+hostname: rancher.your-domain.internal
 bootstrapPassword: "foobar"
 replicas: 1
 global:
