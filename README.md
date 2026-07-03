@@ -27,6 +27,7 @@ Note that ipv6, dual-stack and aarch64 scenarios are currently tech-preview and 
 - Air gap scenarios for management cluster
 - Additional cacerts to use external TLS file server for managment cluster (to server images over HTTPS)
 - Air gap scenarios for downstream clusters
+- Longhorn scenarios for downstream clusters
 - CPU Manager scenarios
 - AARCH64 architecture:
   1. Tech Preview for full aarch64 e2e, mgmt-cluster and downstream clusters using aarch64 architecture
