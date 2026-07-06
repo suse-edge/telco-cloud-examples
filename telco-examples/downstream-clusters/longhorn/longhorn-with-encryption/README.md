@@ -94,6 +94,12 @@ kubectl apply -f capi-multinode-encryption.yaml
 
 ## Post-deployment verification
 
+Get cluster kubeconfig:
+
+```bash
+clusterctl get kubeconfig ${CLUSTER_NAME} > <cluster-kubeconfig>
+```
+
 Check cluster status:
 
 ```bash

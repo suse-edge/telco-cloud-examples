@@ -104,6 +104,12 @@ kubectl apply -f capi-multinode-inplace-upgrade.yaml
 
 ## Post-deployment verification
 
+Get cluster kubeconfig:
+
+```bash
+clusterctl get kubeconfig ${CLUSTER_NAME} > <cluster-kubeconfig>
+```
+
 Check cluster status:
 
 ```bash
@@ -121,9 +127,9 @@ kubectl --kubeconfig=<cluster-kubeconfig> get storageclass
 Verify settings:
 
 ```bash
-kubectl --kubeconfig=<cluster-kubeconfig> get settings.longhorn.io -n longhorn-system node-drain-policy -o jsonpath='{.value}'
-kubectl --kubeconfig=<cluster-kubeconfig> get settings.longhorn.io -n longhorn-system replica-replenishment-wait-interval -o jsonpath='{.value}'
-kubectl --kubeconfig=<cluster-kubeconfig> get storageclass longhorn -o jsonpath='{.parameters.staleReplicaTimeout}'
+kubectl --kubeconfig=<cluster-kubeconfig> get settings.longhorn.io -n longhorn-system node-drain-policy -o jsonpath='{.value}{"\n"}'
+kubectl --kubeconfig=<cluster-kubeconfig> get settings.longhorn.io -n longhorn-system replica-replenishment-wait-interval -o jsonpath='{.value}{"\n"}'
+kubectl --kubeconfig=<cluster-kubeconfig> get storageclass longhorn -o jsonpath='{.parameters.staleReplicaTimeout}{"\n"}'
 ```
 
 Verify MetalLB and VIP:
@@ -137,7 +143,7 @@ kubectl --kubeconfig=<cluster-kubeconfig> get ipaddresspool -n metallb-system
 
 To upgrade the cluster:
 
-1. Update the RKE2 version in the manifest:
+1. Update the RKE2 version in the manifest (this example uses v1.35.4+rke2r1 for testing purposes, adjust to match your STC release version):
 
 ```bash
 kubectl patch rke2controlplane ${CLUSTER_NAME} --type merge -p '{"spec":{"version":"v1.35.4+rke2r1"}}'

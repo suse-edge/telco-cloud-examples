@@ -54,7 +54,6 @@ spec:
     rollingUpdate:
       maxSurge: 0
   registrationMethod: "control-plane-endpoint"
-  registrationAddress: ${VIP_ADDRESS}
   serverConfig:
     cni: calico
     tlsSan:
