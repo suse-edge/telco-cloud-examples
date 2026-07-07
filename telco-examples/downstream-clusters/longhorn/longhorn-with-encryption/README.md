@@ -21,6 +21,10 @@ This example deploys:
 - Encrypted StorageClass configured with 3 volume replicas and no host data locality
 - Minimal required settings for encrypted volumes
 
+## What's not included
+
+- Configuring dedicated NVMe or SSD disks for Longhorn. By default, Longhorn stores data in `/var/lib/longhorn` on the root partition. To prevent node instability caused by an exhausted root disk, it is best practice to attach additional disks. See the [Longhorn documentation](https://longhorn.io/docs/latest/nodes-and-volumes/nodes/multidisk/).
+
 ## Files
 
 - `bmh-cp-node1.yaml` - BareMetalHost definition for control plane node 1
@@ -140,7 +144,3 @@ kubectl --kubeconfig=<cluster-kubeconfig> get ipaddresspool -n metallb-system
 This example uses an encrypted StorageClass configured with 3 volume replicas and no host data locality. With `defaultClass: false`, you must specify the longhorn StorageClass explicitly in your PVCs to use longhorn storage.
 
 For production deployments with CAPI in-place upgrades, use the bmh-capi-encryption-inplace-upgrade example.
-
-## What's not included
-
-- Configuring dedicated NVMe or SSD disks for Longhorn. By default, Longhorn stores data in `/var/lib/longhorn` on the root partition. To prevent node instability caused by an exhausted root disk, it is best practice to attach additional disks. See the [Longhorn documentation](https://longhorn.io/docs/latest/nodes-and-volumes/nodes/multidisk/).
