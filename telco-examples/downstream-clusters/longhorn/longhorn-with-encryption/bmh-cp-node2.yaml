@@ -17,7 +17,7 @@ metadata:
     cluster-role: control-plane
 spec:
   online: true
-  bootMACAddress: ${BMC_NODE2_MAC}
+  bootMACAddress: ${NODE2_MAC_BOOT}
   bmc:
     address: ${BMC_NODE2_ADDRESS}
     credentialsName: bmc-node2-credentials

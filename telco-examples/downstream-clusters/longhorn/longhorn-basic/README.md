@@ -36,7 +36,7 @@ For each of the 3 control plane nodes:
 
 - `${BMC_NODE*_USERNAME}` - BMC username for each node
 - `${BMC_NODE*_PASSWORD}` - BMC password for each node
-- `${BMC_NODE*_MAC}` - MAC address of each server
+- `${NODE*_MAC_BOOT}` - MAC address of the NIC on each server used to execute the PXE boot
 - `${BMC_NODE*_ADDRESS}` - BMC URL for each node (e.g. redfish-virtualmedia://192.168.200.75/redfish/v1/Systems/1/)
 
 ### In capi-multinode-basic-longhorn.yaml

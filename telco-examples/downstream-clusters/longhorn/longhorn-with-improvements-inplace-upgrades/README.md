@@ -17,10 +17,14 @@ This example deploys:
 - MetalLB for VIP management
 - Endpoint Copier Operator for endpoint synchronization
 - Longhorn installation (suse-storage 1.11.1)
-- StorageClass with staleReplicaTimeout optimized for upgrades
+- Uses `longhorn`, a non-encrypted StorageClass with staleReplicaTimeout optimized for upgrades. It uses 3 volume replicas and best-effort host data locality
 - Critical settings for CAPI in-place upgrades (nodeReuse=true)
-- Settings to prevent PDB blocking during node drain
+- Settings to prevent PDB (Pod Disruption Budget) blocking during node drain
 - No encryption configured (for encryption, use bmh-capi-encryption example)
+
+## What's not included
+
+- Configuring dedicated NVMe or SSD disks for Longhorn. By default, Longhorn stores data in `/var/lib/longhorn` on the root partition. To prevent node instability caused by an exhausted root disk, it is best practice to attach additional disks. See the [Longhorn documentation](https://longhorn.io/docs/latest/nodes-and-volumes/nodes/multidisk/).
 
 ## Files
 
@@ -37,7 +41,7 @@ For each of the 3 control plane nodes:
 
 - `${BMC_NODE*_USERNAME}` - BMC username for each node
 - `${BMC_NODE*_PASSWORD}` - BMC password for each node
-- `${BMC_NODE*_MAC}` - MAC address of each server
+- `${NODE*_MAC_BOOT}` - MAC address of the NIC on each server used to execute the PXE boot
 - `${BMC_NODE*_ADDRESS}` - BMC URL for each node (e.g. redfish-virtualmedia://192.168.200.75/redfish/v1/Systems/1/)
 
 ### In capi-multinode-inplace-upgrade.yaml

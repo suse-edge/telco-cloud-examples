@@ -42,6 +42,6 @@ spec:
     deviceName: /dev/nvme0n1
   preprovisioningNetworkDataName: controlplane-0-networkdata
   bmc:
-    address: ${BMC_MAC}
+    address: ${NODE_MAC_BOOT}
     disableCertificateVerification: true
     credentialsName: example-demo-credentials
