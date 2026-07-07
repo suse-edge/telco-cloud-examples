@@ -47,7 +47,7 @@ metadata:
 spec:
   architecture: x86_64
   online: true
-  bootMACAddress: ${BMC_MAC}
+  bootMACAddress: ${NODE_MAC_BOOT}
   rootDeviceHints:
     deviceName: /dev/nvme0n1
   bmc:

@@ -19,7 +19,7 @@ spec:
   online: true
   rootDeviceHints:
     deviceName: /dev/vda
-  bootMACAddress: ${BMC_MAC}
+  bootMACAddress: ${NODE_MAC_BOOT}
   bmc:
     address: ${BMC_ADDRESS}
     disableCertificateVerification: true

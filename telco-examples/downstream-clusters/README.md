@@ -99,7 +99,7 @@ The first step is to enroll the new Baremetal host in the management cluster. To
 
 - `${BMC_USERNAME}` - The username for the BMC of the new Baremetal host.
 - `${BMC_PASSWORD}` - The password for the BMC of the new Baremetal host.
-- `${BMC_MAC}` - The MAC address of the new Baremetal host to be used.
+- `${NODE_MAC_BOOT}` - The MAC address of the new Baremetal host to be used.
 - `${BMC_ADDRESS}` - The URL for the Baremetal host BMC (e.g `redfish-virtualmedia://192.168.200.75/redfish/v1/Systems/1/`). If you want to know more about the different options available depending on your hardware provider, please check the following [link](https://github.com/metal3-io/baremetal-operator/blob/main/docs/api.md).
 
 > **_Note:_** Please makes sure that the bmh file contains the right architecture for the downstream cluster. In this case, it should be `archictecture: x86_64` in order to match with the image generated in the previous step.
@@ -198,7 +198,7 @@ The first step is to enroll the new Baremetal hosts in the management cluster. T
 
 - `${BMC_NODE1_USERNAME}` - The username for the BMC of the first Baremetal host.
 - `${BMC_NODE1_PASSWORD}` - The password for the BMC of the first Baremetal host.
-- `${BMC_NODE1_MAC}` - The MAC address of the first Baremetal host to be used.
+- `${NODE1_MAC_BOOT}` - The MAC address of the first Baremetal host to be used.
 - `${BMC_NODE1_ADDRESS}` - The URL for the first Baremetal host BMC (e.g `redfish-virtualmedia://192.168.200.75/redfish/v1/Systems/1/`). If you want to know more about the different options available depending on your hardware provider, please check the following [link](https://github.com/metal3-io/baremetal-operator/blob/main/docs/api.md).
 
 > **_Note:_** Please makes sure that the bmh file contains the right architecture for the downstream cluster. In this case, it should be `archictecture: x86_64` in order to match with the image generated in the previous step.

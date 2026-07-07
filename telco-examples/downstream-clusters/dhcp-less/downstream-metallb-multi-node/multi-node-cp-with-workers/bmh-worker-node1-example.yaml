@@ -47,7 +47,7 @@ metadata:
 spec:
   architecture: x86_64
   online: true
-  bootMACAddress: ${BMC_NODE1_MAC}
+  bootMACAddress: ${NODE1_MAC_BOOT}
   bmc:
     address: ${BMC_NODE1_ADDRESS}
     disableCertificateVerification: true
