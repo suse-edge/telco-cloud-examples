@@ -1,0 +1,511 @@
+# secret to include the private registry certificates
+apiVersion: v1
+kind: Secret
+metadata:
+  name: private-registry-cert
+  namespace: default
+data:
+  tls.crt: ${TLS_BASE64_CERT}
+  tls.key: ${TLS_BASE64_KEY}
+  ca.crt: ${CA_BASE64_CERT}
+type: kubernetes.io/tls
+---
+# secret to include the private registry auth credentials
+apiVersion: v1
+kind: Secret
+metadata:
+  name: private-registry-auth
+  namespace: default
+data:
+  username: ${REGISTRY_USERNAME}
+  password: ${REGISTRY_PASSWORD}
+---
+apiVersion: cluster.x-k8s.io/v1beta2
+kind: Cluster
+metadata:
+  name: ha-cluster
+  namespace: default
+  labels:
+    cluster-api.cattle.io/rancher-auto-import: "true"
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+        - fd00:bad:face::/48
+    services:
+      cidrBlocks:
+        - fd00:bad:deaf:beef::/112
+  controlPlaneRef:
+    apiGroup: controlplane.cluster.x-k8s.io
+    kind: RKE2ControlPlane
+    name: ha-cluster
+  infrastructureRef:
+    apiGroup: infrastructure.cluster.x-k8s.io
+    kind: Metal3Cluster
+    name: ha-cluster
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: Metal3Cluster
+metadata:
+  name: ha-cluster
+  namespace: default
+spec:
+  controlPlaneEndpoint:
+    host: ${DOWNSTREAM_CONTROL_PLANE_IP}
+    port: 6443
+  noCloudProvider: true
+# CONTROL PLANE
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+kind: RKE2ControlPlane
+metadata:
+  name: ha-cluster
+  namespace: default
+spec:
+  machineTemplate:
+    spec:
+      infrastructureRef:
+        apiGroup: infrastructure.cluster.x-k8s.io
+        kind: Metal3MachineTemplate
+        name: ha-cluster-controlplane
+  replicas: 3
+  privateRegistriesConfig:
+    mirrors:
+      registry.suse.com:
+        endpoint:
+          - "${PRIVATE_REGISTRY_URL}"
+        rewrite:
+          "^(.*)$": "mirror/$1"
+      registry.suse.de:
+        endpoint:
+          - "${PRIVATE_REGISTRY_URL}"
+        rewrite:
+          "^(.*)$": "mirror/$1"
+      registry.opensuse.org:
+        endpoint:
+          - "${PRIVATE_REGISTRY_URL}"
+        rewrite:
+          "^(.*)$": "mirror/$1"
+      registry.rancher.com:
+        endpoint:
+          - "${PRIVATE_REGISTRY_URL}"
+        rewrite:
+          "^(.*)$": "mirror/$1"
+      registry.k8s.io:
+        endpoint:
+          - "${PRIVATE_REGISTRY_URL}"
+        rewrite:
+          "^(.*)$": "mirror/$1"
+      docker.io:
+        endpoint:
+          - "${PRIVATE_REGISTRY_URL}"
+        rewrite:
+          "^(.*)$": "mirror/$1"
+    configs:
+      "${PRIVATE_REGISTRY_URL}":
+        authSecret:
+          apiVersion: v1
+          kind: Secret
+          namespace: default
+          name: private-registry-basic-auth
+        tls:
+          tlsConfigSecret:
+            apiVersion: v1
+            kind: Secret
+            namespace: default
+            name: private-registry-cert
+          insecureSkipVerify: false
+  rolloutStrategy:
+    type: "RollingUpdate"
+    rollingUpdate:
+      maxSurge: 0
+  registrationMethod: "control-plane-endpoint"
+  registrationAddress: ${DOWNSTREAM_CONTROL_PLANE_IP}
+  serverConfig:
+    cni: "cilium"
+    cniMultusEnable: true
+    tlsSan:
+      - ${DOWNSTREAM_CONTROL_PLANE_IP}
+  agentConfig:
+    airGapped: true
+    format: ignition
+    additionalUserData:
+      config: |-
+        variant: fcos
+        version: 1.4.0
+        systemd:
+          units:
+            - name: rke2-preinstall.service
+              enabled: true
+              contents: |
+                [Unit]
+                Description=rke2-preinstall
+                Wants=network-online.target
+                Before=rke2-install.service
+                ConditionPathExists=!/run/cluster-api/bootstrap-success.complete
+                [Service]
+                Type=oneshot
+                User=root
+                ExecStartPre=/bin/sh -c "mount -L config-2 /mnt"
+                ExecStart=/bin/sh -c "sed -i \"s/BAREMETALHOST_UUID/$(jq -r .uuid /mnt/openstack/latest/meta_data.json)/\" /etc/rancher/rke2/config.yaml"
+                ExecStart=/bin/sh -c "echo \"node-name: $(jq -r .name /mnt/openstack/latest/meta_data.json)\" >> /etc/rancher/rke2/config.yaml"
+                ExecStart=/bin/sh -c "echo \"node-label:\" >> /etc/rancher/rke2/config.yaml"
+                ExecStart=/bin/sh -c "echo \"  - metal3.io/uuid=$(jq -r .uuid /mnt/openstack/latest/meta_data.json)\" >> /etc/rancher/rke2/config.yaml"
+                ExecStart=/bin/sh -c "echo \"ingress-controller: traefik\" >> /etc/rancher/rke2/config.yaml"
+                ExecStartPost=/bin/sh -c "umount /mnt"
+                [Install]
+                WantedBy=multi-user.target
+        storage:
+          directories:
+            - path: /var/lib/rancher/rke2/server/manifests
+              overwrite: true
+            - path: /var/lib/rancher/rke2/server/manifests/endpoint-copier-operator.yaml
+              overwrite: true
+              contents:
+                inline: |
+                  apiVersion: helm.cattle.io/v1
+                  kind: HelmChart
+                  metadata:
+                    name: endpoint-copier-operator
+                    namespace: kube-system
+                  spec:
+                    chart: oci://${PRIVATE_REGISTRY_URL}/mirror/endpoint-copier-operator
+                    dockerRegistrySecret:
+                      name: private-registry-docker-config
+                    repoCAConfigMap:
+                      name: private-registry-ca
+                    targetNamespace: endpoint-copier-operator
+                    version: 306.0.1+up0.3.0
+                    createNamespace: true
+            - path: /var/lib/rancher/rke2/server/manifests/metallb.yaml
+              overwrite: true
+              contents:
+                inline: |
+                  apiVersion: helm.cattle.io/v1
+                  kind: HelmChart
+                  metadata:
+                    name: metallb
+                    namespace: kube-system
+                  spec:
+                    chart: oci://${PRIVATE_REGISTRY_URL}/mirror/metallb
+                    dockerRegistrySecret:
+                      name: private-registry-docker-config
+                    repoCAConfigMap:
+                      name: private-registry-ca
+                    targetNamespace: metallb-system
+                    version: 306.0.2+up0.15.3
+                    createNamespace: true
+            - path: /var/lib/rancher/rke2/server/manifests/metallb-api-vip.yaml
+              overwrite: true
+              contents:
+                inline: |
+                  apiVersion: metallb.io/v1beta1
+                  kind: IPAddressPool
+                  metadata:
+                    name: kubernetes-vip-ip-pool
+                    namespace: metallb-system
+                  spec:
+                    addresses:
+                      - ${DOWNSTREAM_CONTROL_PLANE_IP}/128
+                    avoidBuggyIPs: true
+                    serviceAllocation:
+                      namespaces:
+                        - default
+                      serviceSelectors:
+                        - matchExpressions:
+                          - {key: "serviceType", operator: In, values: [kubernetes-vip]}
+                  ---
+                  apiVersion: metallb.io/v1beta1
+                  kind: L2Advertisement
+                  metadata:
+                    name: ip-pool-l2-adv
+                    namespace: metallb-system
+                  spec:
+                    ipAddressPools:
+                      - kubernetes-vip-ip-pool
+            - path: /var/lib/rancher/rke2/server/manifests/kubernetes-vip-svc.yaml
+              overwrite: true
+              contents:
+                inline: |
+                  apiVersion: v1
+                  kind: Service
+                  metadata:
+                    name: kubernetes-vip
+                    namespace: default
+                    labels:
+                      serviceType: kubernetes-vip
+                  spec:
+                    ports:
+                    - name: rke2-api
+                      port: 9345
+                      protocol: TCP
+                      targetPort: 9345
+                    - name: k8s-api
+                      port: 6443
+                      protocol: TCP
+                      targetPort: 6443
+                    type: LoadBalancer
+            - path: /var/lib/rancher/rke2/server/manifests/rke2-cilium-config.yaml
+              overwrite: true
+              contents:
+                inline: |
+                  apiVersion: helm.cattle.io/v1
+                  kind: HelmChartConfig
+                  metadata:
+                    name: rke2-cilium
+                    namespace: kube-system
+                  spec:
+                    valuesContent: |-
+                      ipv6NativeRoutingCIDR: fd00:bad:face::/48
+                      routingMode: native
+                      autoDirectNodeRoutes: true
+                      kubeProxyReplacement: true
+                      enableIPMasqAgent: false
+            - path: /var/lib/rancher/rke2/server/manifests/traefik-resources.yaml
+              overwrite: true
+              contents:
+                inline: |
+                  apiVersion: metallb.io/v1beta1
+                  kind: IPAddressPool
+                  metadata:
+                    name: ingress-ip-pool
+                    namespace: metallb-system
+                  spec:
+                    addresses:
+                      - fd12:3456:890b::251/128
+                    avoidBuggyIPs: true
+                    serviceAllocation:
+                      namespaces:
+                        - kube-system
+                      serviceSelectors:
+                        - matchExpressions:
+                          - {key: "app.kubernetes.io/name", operator: In, values: ["rke2-traefik"]}
+                  ---
+                  apiVersion: metallb.io/v1beta1
+                  kind: L2Advertisement
+                  metadata:
+                    name: ingress-l2-adv
+                    namespace: metallb-system
+                  spec:
+                    ipAddressPools:
+                      - ingress-ip-pool
+                  ---
+                  apiVersion: helm.cattle.io/v1
+                  kind: HelmChartConfig
+                  metadata:
+                    name: rke2-traefik
+                    namespace: kube-system
+                  spec:
+                    valuesContent: |-
+                      providers:
+                        kubernetesIngressNginx:
+                          enabled: true
+                          ingressClass: "rke2-ingress-nginx-migration"
+                          controllerClass: "rke2.cattle.io/ingress-nginx-migration"
+                      service:
+                        enabled: true
+                        type: LoadBalancer
+                        externalTrafficPolicy: Local
+                        ipFamilyPolicy: SingleStack
+                        ipFamilies:
+                          - IPv6
+    kubelet:
+      extraArgs:
+        - provider-id=metal3://BAREMETALHOST_UUID
+  version: ${RKE2_VERSION}
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: Metal3MachineTemplate
+metadata:
+  name: ha-cluster-controlplane
+  namespace: default
+spec:
+  nodeReuse: true
+  template:
+    spec:
+      dataTemplate:
+        name: ha-cluster-controlplane-template
+      hostSelector:
+        matchLabels:
+          cluster-role: ha-cluster-controlplane
+      automatedCleaningMode: disabled
+      image:
+        url: https://imagecache.local:8080/image.raw
+        checksum: https://imagecache.local:8080/image.raw.sha256
+        checksumType: sha256
+        format: raw
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: Metal3DataTemplate
+metadata:
+  name: ha-cluster-controlplane-template
+  namespace: default
+spec:
+  clusterName: ha-cluster
+  metaData:
+    objectNames:
+      - key: name
+        object: machine
+      - key: local-hostname
+        object: machine
+      - key: local_hostname
+        object: machine
+# WORKERS
+---
+apiVersion: cluster.x-k8s.io/v1beta2
+kind: MachineDeployment
+metadata:
+  labels:
+    cluster.x-k8s.io/cluster-name: ha-cluster
+    nodepool: nodepool-0
+  name: ha-cluster
+  namespace: default
+spec:
+  clusterName: ha-cluster
+  replicas: 1
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/cluster-name: ha-cluster
+      nodepool: nodepool-0
+  template:
+    metadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: ha-cluster
+        nodepool: nodepool-0
+    spec:
+      bootstrap:
+        configRef:
+          apiGroup: bootstrap.cluster.x-k8s.io
+          kind: RKE2ConfigTemplate
+          name: ha-cluster-workers
+      clusterName: ha-cluster
+      infrastructureRef:
+        apiGroup: infrastructure.cluster.x-k8s.io
+        kind: Metal3MachineTemplate
+        name: ha-cluster-workers
+      deletion:
+        nodeDrainTimeoutSeconds: 0
+      version: ${RKE2_VERSION}
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+kind: RKE2ConfigTemplate
+metadata:
+  name: ha-cluster-workers
+  namespace: default
+spec:
+  template:
+    spec:
+      privateRegistriesConfig:
+        mirrors:
+          registry.suse.com:
+            endpoint:
+              - "${PRIVATE_REGISTRY_URL}"
+            rewrite:
+              "^(.*)$": "mirror/$1"
+          registry.suse.de:
+            endpoint:
+              - "${PRIVATE_REGISTRY_URL}"
+            rewrite:
+              "^(.*)$": "mirror/$1"
+          registry.opensuse.org:
+            endpoint:
+              - "${PRIVATE_REGISTRY_URL}"
+            rewrite:
+              "^(.*)$": "mirror/$1"
+          registry.rancher.com:
+            endpoint:
+              - "${PRIVATE_REGISTRY_URL}"
+            rewrite:
+              "^(.*)$": "mirror/$1"
+          registry.k8s.io:
+            endpoint:
+              - "${PRIVATE_REGISTRY_URL}"
+            rewrite:
+              "^(.*)$": "mirror/$1"
+          docker.io:
+            endpoint:
+              - "${PRIVATE_REGISTRY_URL}"
+            rewrite:
+              "^(.*)$": "mirror/$1"
+        configs:
+          "${PRIVATE_REGISTRY_URL}":
+            authSecret:
+              apiVersion: v1
+              kind: Secret
+              namespace: default
+              name: private-registry-basic-auth
+            tls:
+              tlsConfigSecret:
+                apiVersion: v1
+                kind: Secret
+                namespace: default
+                name: private-registry-cert
+              insecureSkipVerify: false
+      agentConfig:
+        airGapped: true
+        format: ignition
+        kubelet:
+          extraArgs:
+            - provider-id=metal3://BAREMETALHOST_UUID
+
+        nodeName: '{{ ds.meta_data.local_hostname }}'
+        additionalUserData:
+          config: |
+            variant: fcos
+            version: 1.4.0
+            systemd:
+              units:
+                - name: rke2-preinstall.service
+                  enabled: true
+                  contents: |
+                    [Unit]
+                    Description=rke2-preinstall
+                    Wants=network-online.target
+                    Before=rke2-install.service
+                    ConditionPathExists=!/run/cluster-api/bootstrap-success.complete
+                    [Service]
+                    Type=oneshot
+                    User=root
+                    ExecStartPre=/bin/sh -c "mount -L config-2 /mnt"
+                    ExecStart=/bin/sh -c "sed -i \"s/BAREMETALHOST_UUID/$(jq -r .uuid /mnt/openstack/latest/meta_data.json)/\" /etc/rancher/rke2/config.yaml"
+                    ExecStart=/bin/sh -c "echo \"node-name: $(jq -r .name /mnt/openstack/latest/meta_data.json)\" >> /etc/rancher/rke2/config.yaml"
+                    ExecStart=/bin/sh -c "echo \"node-label:\" >> /etc/rancher/rke2/config.yaml"
+                    ExecStart=/bin/sh -c "echo \"  - metal3.io/uuid=$(jq -r .uuid /mnt/openstack/latest/meta_data.json)\" >> /etc/rancher/rke2/config.yaml"
+                    ExecStartPost=/bin/sh -c "umount /mnt"
+                    [Install]
+                    WantedBy=multi-user.target
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: Metal3MachineTemplate
+metadata:
+  name: ha-cluster-workers
+  namespace: default
+spec:
+  template:
+    spec:
+      dataTemplate:
+        name: ha-cluster-workers-template
+      hostSelector:
+        matchLabels:
+          cluster-role: ha-cluster-worker
+      image:
+        url: https://imagecache.local:8080/image.raw
+        checksum: http://imagecache.local:8080/image.raw.sha256
+        checksumType: sha256
+        format: raw
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: Metal3DataTemplate
+metadata:
+  name: ha-cluster-workers-template
+  namespace: default
+spec:
+  clusterName: ha-cluster
+  metaData:
+    objectNames:
+      - key: name
+        object: machine
+      - key: local-hostname
+        object: machine
+      - key: local_hostname
+        object: machine
