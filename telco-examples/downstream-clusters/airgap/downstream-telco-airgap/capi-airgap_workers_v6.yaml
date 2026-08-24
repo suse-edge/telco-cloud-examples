@@ -44,7 +44,7 @@ spec:
     kind: Metal3Cluster
     name: ha-cluster
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3Cluster
 metadata:
   name: ha-cluster
@@ -53,7 +53,7 @@ spec:
   controlPlaneEndpoint:
     host: ${DOWNSTREAM_CONTROL_PLANE_IP}
     port: 6443
-  noCloudProvider: true
+  cloudProviderEnabled: false
 # CONTROL PLANE
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1beta2
@@ -314,7 +314,7 @@ spec:
         - provider-id=metal3://BAREMETALHOST_UUID
   version: ${RKE2_VERSION}
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3MachineTemplate
 metadata:
   name: ha-cluster-controlplane
@@ -333,9 +333,9 @@ spec:
         url: https://imagecache.local:8080/image.raw
         checksum: https://imagecache.local:8080/image.raw.sha256
         checksumType: sha256
-        format: raw
+        diskFormat: raw
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3DataTemplate
 metadata:
   name: ha-cluster-controlplane-template
@@ -475,7 +475,7 @@ spec:
                     [Install]
                     WantedBy=multi-user.target
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3MachineTemplate
 metadata:
   name: ha-cluster-workers
@@ -492,9 +492,9 @@ spec:
         url: https://imagecache.local:8080/image.raw
         checksum: http://imagecache.local:8080/image.raw.sha256
         checksumType: sha256
-        format: raw
+        diskFormat: raw
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3DataTemplate
 metadata:
   name: ha-cluster-workers-template
