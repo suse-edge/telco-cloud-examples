@@ -22,7 +22,7 @@ spec:
     kind: Metal3Cluster
     name: multinode-cluster
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3Cluster
 metadata:
   name: multinode-cluster
@@ -173,7 +173,7 @@ spec:
       - provider-id=metal3://BAREMETALHOST_UUID
     nodeName: "Node-multinode-cluster"
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3MachineTemplate
 metadata:
   name: multinode-cluster-controlplane
@@ -189,10 +189,10 @@ spec:
       image:
         checksum: http://imagecache.local:8080/eibimage-slmicro-rt-telco.raw.sha256
         checksumType: sha256
-        format: raw
+        diskFormat: raw
         url: http://imagecache.local:8080/eibimage-slmicro-rt-telco.raw
 ---
-apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta2
 kind: Metal3DataTemplate
 metadata:
   name: multinode-cluster-controlplane-template
