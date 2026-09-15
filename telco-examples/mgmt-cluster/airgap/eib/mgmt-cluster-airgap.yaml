@@ -17,7 +17,7 @@ operatingSystem:
       - openssh-server-config-rootlogin
     sccRegistrationCode: ${SCC_REGISTRATION_CODE}
 kubernetes:
-  version: v1.35.3+rke2r3
+  version: v1.36.3+rke2r1
   helm:
     charts:
       - createNamespace: true
@@ -35,48 +35,49 @@ kubernetes:
         createNamespace: true
         installationNamespace: kube-system
       - name: suse-storage
-        version: 1.11.1
+        releaseName: longhorn
+        version: 1.12.1
         repositoryName: rancher-application-collection
         targetNamespace: longhorn-system
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: longhorn.yaml
       - name: metallb
-        version: 306.0.2+up0.15.3
+        version: 307.0.3+up0.16.1
         targetNamespace: metallb-system
         createNamespace: true
         repositoryName: suse-edge-charts
         installationNamespace: kube-system
       - name: metal3
-        version: 306.0.26+up0.15.0
+        version: 307.0.31+up0.16.0
         repositoryName: suse-edge-charts
         targetNamespace: metal3-system
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: metal3.yaml
       - name: neuvector-crd
-        version: 109.0.1+up2.8.13
+        version: 110.0.1+up2.11.1
         repositoryName: rancher
         targetNamespace: neuvector
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: neuvector.yaml
       - name: neuvector
-        version: 109.0.1+up2.8.13
+        version: 110.0.1+up2.11.1
         repositoryName: rancher
         targetNamespace: neuvector
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: neuvector.yaml
       - name: rancher
-        version: 2.14.1
+        version: 2.15.1
         repositoryName: rancher-prime
         targetNamespace: cattle-system
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: rancher.yaml
       - name: rancher-turtles-providers
-        version: 306.0.6+up0.26.1
+        version: 307.0.8+up0.27.0
         repositoryName: suse-edge-charts
         targetNamespace: cattle-turtles-system
         createNamespace: true
@@ -119,47 +120,48 @@ embeddedArtifactRegistry:
     - name: registry.suse.com/private-registry/harbor-registry:1.1.1-1.19
     - name: registry.suse.com/private-registry/harbor-registryctl:1.1.1-1.19
     - name: registry.suse.com/private-registry/harbor-trivy-adapter:1.1.1-1.24
-    - name: registry.rancher.com/rancher/hardened-cluster-autoscaler:v1.10.3-build20260206
-    - name: registry.rancher.com/rancher/hardened-cni-plugins:v1.9.0-build20260309
-    - name: registry.rancher.com/rancher/hardened-coredns:v1.14.2-build20260310
-    - name: registry.rancher.com/rancher/hardened-k8s-metrics-server:v0.8.1-build20260206
-    - name: registry.rancher.com/rancher/hardened-multus-cni:v4.2.4-build20260310
-    - name: registry.rancher.com/rancher/klipper-helm:v0.9.14-build20260309
-    - name: registry.rancher.com/rancher/mirrored-cilium-cilium:v1.19.1
-    - name: registry.rancher.com/rancher/mirrored-cilium-operator-generic:v1.19.1
-    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-attacher:4.11.0-11.1
-    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-provisioner:5.3.0-11.1
-    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-resizer:2.1.0-4.1
-    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-snapshotter:8.5.0-11.1
-    - name: dp.apps.rancher.io/containers/kubernetes-csi-livenessprobe:2.18.0-11.1
-    - name: dp.apps.rancher.io/containers/kubernetes-csi-node-driver-registrar:2.16.0-11.1
-    - name: dp.apps.rancher.io/containers/longhorn-backing-image-manager:1.11.1-1.2
-    - name: dp.apps.rancher.io/containers/longhorn-engine:1.11.1-1.1
-    - name: dp.apps.rancher.io/containers/longhorn-instance-manager:1.11.1-1.1
-    - name: dp.apps.rancher.io/containers/longhorn-manager:1.11.1-1.2
-    - name: dp.apps.rancher.io/containers/longhorn-share-manager:1.11.1-1.1
-    - name: dp.apps.rancher.io/containers/longhorn-ui:1.11.1-1.2
-    - name: dp.apps.rancher.io/containers/rancher-support-bundle-kit:0.0.81-7.3
+    - name: registry.rancher.com/rancher/hardened-cluster-autoscaler:v1.10.3-build20260717
+    - name: registry.rancher.com/rancher/hardened-cni-plugins:v1.9.1-build20260717
+    - name: registry.rancher.com/rancher/hardened-coredns:v1.14.6-build20260722
+    - name: registry.rancher.com/rancher/hardened-k8s-metrics-server:v0.9.0-build20260722
+    - name: registry.rancher.com/rancher/hardened-multus-cni:v4.3.0-build20260722
+    - name: registry.rancher.com/rancher/klipper-helm:v0.13.3-build20260727
+    - name: registry.rancher.com/rancher/mirrored-cilium-cilium:v1.19.6
+    - name: registry.rancher.com/rancher/mirrored-cilium-operator-generic:v1.19.6
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-attacher:4.12.0-17.6
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-provisioner:5.3.0-17.8
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-resizer:2.2.1-10.8
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-external-snapshotter:8.6.0-17.6
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-livenessprobe:2.19.0-17.6
+    - name: dp.apps.rancher.io/containers/kubernetes-csi-node-driver-registrar:2.17.0-17.6
+    - name: dp.apps.rancher.io/containers/longhorn-backing-image-manager:1.12.1-1.5
+    - name: dp.apps.rancher.io/containers/longhorn-engine:1.12.1-1.6
+    - name: dp.apps.rancher.io/containers/longhorn-instance-manager:1.12.1-1.7
+    - name: dp.apps.rancher.io/containers/longhorn-manager:1.12.1-1.5
+    - name: dp.apps.rancher.io/containers/longhorn-share-manager:1.12.1-1.5
+    - name: dp.apps.rancher.io/containers/longhorn-ui:1.12.1-1.3
+    - name: dp.apps.rancher.io/containers/rancher-support-bundle-kit:0.0.92-13.12
     - name: registry.rancher.com/rancher/mirrored-sig-storage-snapshot-controller:v8.2.0
-    - name: registry.rancher.com/rancher/neuvector-compliance-config:1.0.12
-    - name: registry.rancher.com/rancher/neuvector-controller:5.5.1
-    - name: registry.rancher.com/rancher/neuvector-enforcer:5.5.1
-    - name: registry.rancher.com/rancher/hardened-traefik:v3.6.10-build20260309
-    - name: registry.rancher.com/rancher/cluster-api-addon-provider-fleet:v0.14.1
-    - name: registry.rancher.com/rancher/fleet-agent:v0.15.1
-    - name: registry.rancher.com/rancher/fleet:v0.15.1
-    - name: registry.rancher.com/rancher/rancher-webhook:v0.10.4
-    - name: registry.rancher.com/rancher/turtles:v0.26.1
-    - name: registry.rancher.com/rancher/rancher:v2.14.1
-    - name: registry.rancher.com/rancher/shell:v0.1.24
-    - name: registry.rancher.com/rancher/system-upgrade-controller:v0.19.1
-    - name: registry.rancher.com/rancher/cluster-api-controller:v1.12.2
-    - name: registry.suse.com/rancher/cluster-api-provider-metal3:v1.12.3
-    - name: registry.rancher.com/rancher/cluster-api-provider-rke2-bootstrap:v0.24.3
-    - name: registry.rancher.com/rancher/cluster-api-provider-rke2-controlplane:v0.24.3
-    - name: registry.rancher.com/rancher/ip-address-manager:v1.12.3
+    - name: registry.rancher.com/rancher/neuvector-compliance-config:1.0.16
+    - name: registry.rancher.com/rancher/neuvector-controller:5.6.1
+    - name: registry.rancher.com/rancher/neuvector-enforcer:5.6.1
+    - name: registry.rancher.com/rancher/neuvector-updater:0.0.14
+    - name: registry.rancher.com/rancher/hardened-traefik:v3.7.8-build20260717
+    - name: registry.suse.com/rancher/cluster-api-addon-provider-fleet:v0.15.0
+    - name: registry.rancher.com/rancher/fleet-agent:v0.16.1
+    - name: registry.rancher.com/rancher/fleet:v0.16.1
+    - name: registry.rancher.com/rancher/rancher-webhook:v0.11.1
+    - name: registry.rancher.com/rancher/turtles:v0.27.1
+    - name: registry.rancher.com/rancher/rancher:v2.15.1
+    - name: registry.rancher.com/rancher/shell:v0.8.1
+    - name: registry.rancher.com/rancher/system-upgrade-controller:v0.20.1
+    - name: registry.rancher.com/rancher/cluster-api-controller:v1.13.3
+    - name: registry.suse.com/rancher/cluster-api-provider-metal3:v1.13.2
+    - name: registry.suse.com/rancher/cluster-api-provider-rke2-bootstrap:v0.25.0
+    - name: registry.suse.com/rancher/cluster-api-provider-rke2-controlplane:v0.25.0
+    - name: registry.rancher.com/rancher/ip-address-manager:v1.13.2
     - name: registry.rancher.com/rancher/kubectl:v1.35.2
-    - name: registry.rancher.com/rancher/mirrored-cluster-api-controller:v1.12.2
-    - name: registry.rancher.com/rancher/scc-operator:v0.4.0
-    - name: registry.rancher.com/rancher/kubectl:v1.35.2
-    - name: registry.suse.com/edge/3.5/ironic-python-agent:3.0.8
+    - name: registry.rancher.com/rancher/kuberlr-kubectl:v7.1.1
+    - name: registry.rancher.com/rancher/kuberlr-kubectl:v8.1.1
+    - name: registry.rancher.com/rancher/scc-operator:v0.5.1
+    - name: registry.suse.com/edge/3.7/ironic-python-agent:3.0.10

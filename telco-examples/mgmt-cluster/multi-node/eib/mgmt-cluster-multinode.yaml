@@ -17,7 +17,7 @@ operatingSystem:
       - openssh-server-config-rootlogin
     sccRegistrationCode: ${SCC_REGISTRATION_CODE}
 kubernetes:
-  version: v1.35.3+rke2r3
+  version: v1.36.3+rke2r1
   helm:
     charts:
       - name: cert-manager
@@ -28,42 +28,43 @@ kubernetes:
         createNamespace: true
         installationNamespace: kube-system
       - name: suse-storage
-        version: 1.11.1
+        releaseName: longhorn
+        version: 1.12.1
         repositoryName: rancher-application-collection
         targetNamespace: longhorn-system
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: longhorn.yaml
       - name: metal3
-        version: 306.0.26+up0.15.0
+        version: 307.0.31+up0.16.0
         repositoryName: suse-edge-charts
         targetNamespace: metal3-system
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: metal3.yaml
       - name: neuvector-crd
-        version: 109.0.1+up2.8.13
+        version: 110.0.1+up2.11.1
         repositoryName: rancher
         targetNamespace: neuvector
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: neuvector.yaml
       - name: neuvector
-        version: 109.0.1+up2.8.13
+        version: 110.0.1+up2.11.1
         repositoryName: rancher
         targetNamespace: neuvector
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: neuvector.yaml
       - name: rancher
-        version: 2.14.1
+        version: 2.15.1
         repositoryName: rancher-prime
         targetNamespace: cattle-system
         createNamespace: true
         installationNamespace: kube-system
         valuesFile: rancher.yaml
       - name: rancher-turtles-providers
-        version: 306.0.6+up0.26.1
+        version: 307.0.8+up0.27.0
         repositoryName: suse-edge-charts
         targetNamespace: cattle-turtles-system
         createNamespace: true

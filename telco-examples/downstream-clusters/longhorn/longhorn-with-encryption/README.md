@@ -16,7 +16,7 @@ This example deploys:
 - 3 control plane nodes with HA configuration
 - MetalLB for VIP management
 - Endpoint Copier Operator for endpoint synchronization
-- Longhorn installation (suse-storage 1.11.1)
+- Longhorn installation (suse-storage 1.12.1)
 - Encryption secret with LUKS/AES-256 configuration
 - Encrypted StorageClass configured with 3 volume replicas and no host data locality
 - Minimal required settings for encrypted volumes
@@ -47,7 +47,7 @@ For each of the 3 control plane nodes:
 
 - `${CLUSTER_NAME}` - Name for your cluster
 - `${VIP_ADDRESS}` - VIP address for the cluster endpoint (MetalLB managed)
-- `${RKE2_VERSION}` - RKE2 version (e.g. v1.35.3+rke2r3)
+- `${RKE2_VERSION}` - RKE2 version (e.g. v1.36.3+rke2r1)
 - `${IMAGE_URL}` - URL to the EIB-generated image
 - `${IMAGE_CHECKSUM_URL}` - URL to the image checksum file
 - `${DP_APPS_RANCHER_SECRET}` - Base64 encoded dockerconfigjson for dp.apps.rancher.io registry

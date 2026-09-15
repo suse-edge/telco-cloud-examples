@@ -31,7 +31,7 @@ You need to modify the following folder:
 
 ```
 mkdir output
-sudo podman run --privileged -v /etc/zypp/repos.d:/micro-sdk/repos/ -v $(pwd)/output:/tmp/output -it registry.suse.com/edge/3.6/kiwi-builder:10.2.29.1 build-image -p Base-RT-SelfInstall
+sudo podman run --privileged -v /etc/zypp/repos.d:/micro-sdk/repos/ -v $(pwd)/output:/tmp/output -it registry.suse.com/edge/3.7/kiwi-builder:10.2.29.1 build-image -p Base-RT-SelfInstall
 ```
 
 The resulting raw image needs to be copied over to the `base-image` folder and used as a reference in the `eib/telco-downstream-cluster.yaml` file:
@@ -40,7 +40,7 @@ The resulting raw image needs to be copied over to the `base-image` folder and u
 cp $(pwd)/output/*.raw base-images/
 ```
 
-> **_Note:_** For more information about this process you can follow the [full guide instructions in official docs](https://documentation.suse.com/suse-edge/3.6/html/edge/guides-kiwi-builder-images.html)
+> **_Note:_** For more information about this process you can follow the [full guide instructions in official docs](https://documentation.suse.com/suse-telco/3.7/html/telco/guides-kiwi-builder-images.html)
 
 ### Building the Downstream Cluster Image using EIB
 
@@ -51,7 +51,7 @@ All the following commands in this section could be executed using any linux lap
 ```
 $ cd telco-examples/downstream-clusters
 $ sudo podman run --rm --privileged -it -v $PWD:/eib \
-registry.suse.com/edge/3.6/edge-image-builder:1.3.3.1 \
+registry.suse.com/edge/3.7/edge-image-builder:1.3.4 \
 build --definition-file telco-downstream-cluster.yaml
 ```
 

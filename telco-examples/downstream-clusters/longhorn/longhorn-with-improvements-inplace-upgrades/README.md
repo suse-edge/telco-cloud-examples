@@ -16,7 +16,7 @@ This example deploys:
 - 3 control plane nodes with HA configuration
 - MetalLB for VIP management
 - Endpoint Copier Operator for endpoint synchronization
-- Longhorn installation (suse-storage 1.11.1)
+- Longhorn installation (suse-storage 1.12.1)
 - Uses `longhorn`, a non-encrypted StorageClass with staleReplicaTimeout optimized for upgrades. It uses 3 volume replicas and best-effort host data locality
 - Critical settings for CAPI in-place upgrades (nodeReuse=true)
 - Settings to prevent PDB (Pod Disruption Budget) blocking during node drain
@@ -48,7 +48,7 @@ For each of the 3 control plane nodes:
 
 - `${CLUSTER_NAME}` - Name for your cluster
 - `${VIP_ADDRESS}` - VIP address for the cluster endpoint (MetalLB managed)
-- `${RKE2_VERSION}` - RKE2 version (e.g. v1.35.3+rke2r3)
+- `${RKE2_VERSION}` - RKE2 version (e.g. v1.36.3+rke2r1)
 - `${IMAGE_URL}` - URL to the EIB-generated image
 - `${IMAGE_CHECKSUM_URL}` - URL to the image checksum file
 - `${DP_APPS_RANCHER_SECRET}` - Base64 encoded dockerconfigjson for dp.apps.rancher.io registry
@@ -147,10 +147,10 @@ kubectl --kubeconfig=<cluster-kubeconfig> get ipaddresspool -n metallb-system
 
 To upgrade the cluster:
 
-1. Update the RKE2 version in the manifest (this example uses v1.35.4+rke2r1 for testing purposes, adjust to match your STC release version):
+1. Update the RKE2 version in the manifest (this example uses v1.36.4+rke2r1 for testing purposes, adjust to match your STC release version):
 
 ```bash
-kubectl patch rke2controlplane ${CLUSTER_NAME} --type merge -p '{"spec":{"version":"v1.35.4+rke2r1"}}'
+kubectl patch rke2controlplane ${CLUSTER_NAME} --type merge -p '{"spec":{"version":"v1.36.4+rke2r1"}}'
 ```
 
 2. Monitor the upgrade:

@@ -8,8 +8,8 @@
 # - Timer Migration: Disable timer migration to prevent interruptions on isolated CPUs
 # - Kernel Daemons: Migrate kswapd and kcompactd threads to housekeeping CPUs
 # - CPU Latency: Set PM QoS resume latency requirements for isolated CPUs
-# - VMStat Updates: Delay vmstat updates to reduce interruptions (300s interval)
-# - Network Tuning: Configure network buffers and UDP parameters for optimal performance
+# - Networking Size Tuning: Persist and apply vmstat interval, network buffers, UDP
+#   parameters and RT throttling via /etc/sysctl.d, so they survive a reboot
 # - Kernel Isolation: Move IRQs, RCU, and kernel threads to housekeeping CPUs
 # - Task Migration: Move unbound user processes from isolated to housekeeping CPUs
 
@@ -19,6 +19,7 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 MAX_EXIT_LATENCY=1
+SYSCTL_TUNING_CONF=/etc/sysctl.d/99-telco-networking-size-tuning.conf
 input=$(cat /etc/tuned/cpu-partitioning-variables.conf | grep isolated_cores | head -1)
 total_cores=$(grep -c ^processor /proc/cpuinfo)
 cpus=$(echo "$input" | awk -F'=' '{print $2}')
@@ -100,26 +101,31 @@ set_isolatecpu_latency() {
 	done
 }
 
-delay_vmstat_updates() {
-	echo "=== Configure: Delay vmstat updates ==="
-	sysctl -w vm.stat_interval=300
-}
-
-configure_network_tuning() {
-	# NOTE: The following network tuning values are examples that have been tested and validated.
+networking_size_tuning() {
+	# NOTE: The following tuning values are examples that have been tested and validated.
 	# However, they should be adapted to your specific use case, workload requirements, and hardware configuration.
-	echo "=== Configure: Network tuning parameters ==="
-	sysctl -w net.core.rmem_max=1342177280
-	sysctl -w net.core.wmem_max=516777216
-	sysctl -w net.core.rmem_default=10000000
-	sysctl -w net.core.wmem_default=10000000
-	sysctl -w net.core.netdev_max_backlog=416384
-	sysctl -w net.core.optmem_max=25165824
-	sysctl -w net.ipv4.udp_mem="11416320 15221760 22832640"
-	sysctl -w net.core.netdev_budget=1024
-	sysctl -w net.ipv4.udp_rmem_min=16384
-	sysctl -w net.ipv4.udp_wmem_min=16384
-	sysctl -w kernel.sched_rt_runtime_us=-1
+	# The values are written to a sysctl.d drop-in file so they are reapplied by
+	# systemd-sysctl on every boot, and then applied immediately to the running system.
+	echo "=== Configure: Networking size tuning (persistent in $SYSCTL_TUNING_CONF) ==="
+
+	mkdir -p "$(dirname "$SYSCTL_TUNING_CONF")"
+	cat > "$SYSCTL_TUNING_CONF" <<-EOF
+		# Managed by performance-settings.sh - Telco workload networking size tuning
+		vm.stat_interval = 300
+		net.core.rmem_max = 1342177280
+		net.core.wmem_max = 516777216
+		net.core.rmem_default = 10000000
+		net.core.wmem_default = 10000000
+		net.core.netdev_max_backlog = 416384
+		net.core.optmem_max = 25165824
+		net.ipv4.udp_mem = 11416320 15221760 22832640
+		net.core.netdev_budget = 1024
+		net.ipv4.udp_rmem_min = 16384
+		net.ipv4.udp_wmem_min = 16384
+		kernel.sched_rt_runtime_us = -1
+	EOF
+
+	sysctl -p "$SYSCTL_TUNING_CONF"
 }
 
 fix_kernel_isolation() {
@@ -190,7 +196,6 @@ set_cpufreq_performance
 unset_timer_migration
 migrate_kdaemons_hk
 set_isolatecpu_latency
-delay_vmstat_updates
-configure_network_tuning
+networking_size_tuning
 fix_kernel_isolation
 move_tasks
