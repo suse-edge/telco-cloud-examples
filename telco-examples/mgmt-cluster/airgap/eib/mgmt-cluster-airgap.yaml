@@ -161,5 +161,4 @@ embeddedArtifactRegistry:
     - name: registry.rancher.com/rancher/kubectl:v1.35.2
     - name: registry.rancher.com/rancher/mirrored-cluster-api-controller:v1.12.2
     - name: registry.rancher.com/rancher/scc-operator:v0.4.0
-    - name: registry.rancher.com/rancher/kubectl:v1.35.2
     - name: registry.suse.com/edge/3.5/ironic-python-agent:3.0.8
