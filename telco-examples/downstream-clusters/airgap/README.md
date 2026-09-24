@@ -34,7 +34,7 @@ You need to modify the following folder:
 
 ```
 mkdir output
-sudo podman run --privileged -v /etc/zypp/repos.d:/micro-sdk/repos/ -v $(pwd)/output:/tmp/output -it registry.suse.com/edge/3.6/kiwi-builder:10.2.29.1 build-image -p Base-RT-SelfInstall
+sudo podman run --privileged -v /etc/zypp/repos.d:/micro-sdk/repos/ -v $(pwd)/output:/tmp/output -it registry.suse.com/edge/3.7/kiwi-builder:10.2.29.1 build-image -p Base-RT-SelfInstall
 ```
 
 The resulting raw image needs to be copied over to the `base-image` folder and used as a reference in the `eib/telco-downstream-cluster.yaml` file:
@@ -43,7 +43,7 @@ The resulting raw image needs to be copied over to the `base-image` folder and u
 cp $(pwd)/output/*.raw base-images/
 ```
 
-> **_Note:_** For more information about this process you can follow the [full guide instructions in official docs](https://documentation.suse.com/suse-edge/3.6/html/edge/guides-kiwi-builder-images.html)
+> **_Note:_** For more information about this process you can follow the [full guide instructions in official docs](https://documentation.suse.com/suse-telco/3.7/html/telco/guides-kiwi-builder-images.html)
 
 
 ### Preparing the airgap artifacts
@@ -71,7 +71,7 @@ The following steps are required to prepare the airgap artifacts using [`seactl`
    ```
    $ podman run --rm \
      -v ./:/opt:z \
-     registry.suse.com/edge/3.6/release-manifest:3.6.0 \
+     registry.suse.com/edge/3.7/release-manifest:3.7.0 \
      mirror \
      -o /opt/output \
      -a /opt/registry-auth.txt \
@@ -85,7 +85,7 @@ The following steps are required to prepare the airgap artifacts using [`seactl`
    ```
    $ podman run --rm \
      -v ./:/opt:z \
-     registry.suse.com/edge/3.6/release-manifest:3.6.0 \
+     registry.suse.com/edge/3.7/release-manifest:3.7.0 \
      mirror \
      -o /opt/output \
      -a /opt/registry-auth.txt \
@@ -115,7 +115,7 @@ All the following commands in this section could be executed on any x86_64 Linux
 ```
 $ cd telco-examples/downstream-clusters/airgap/eib
 $ sudo podman run --rm --privileged -it -v $PWD:/eib \
-registry.suse.com/edge/3.6/edge-image-builder:1.3.3.1 \
+registry.suse.com/edge/3.7/edge-image-builder:1.3.4 \
 build --definition-file telco-edge-airgap-cluster.yaml
 ```
 
@@ -186,12 +186,12 @@ The first thing is to modify the `telco-capi-airgap.yaml` file and replace the f
 - `${PF_NAME1}` - The network interface or physical function (usually filters in the network interface) to be used for the SRIOV.
 - `${DRIVER_NAME1}` - The driver to be used for the interface and VFs (e.g `vfio-pci`).
 - `${NUM_VFS1}` - The number of VFs to be created for the network interface (e.g `2`).
-- `${SRIOV_CRD_VERSION}` - The version of the SRIOV CRD chart to be used for the downstream cluster, for example `303.0.2+up1.5.0`.
-- `${SRIOV_OPERATOR_VERSION}` - The version of the SRIOV Operator chart to be used for the downstream cluster, for example, `303.0.2+up1.5.0`.
+- `${SRIOV_CRD_VERSION}` - The version of the SRIOV CRD chart to be used for the downstream cluster, for example `307.1.0+up1.6.0`.
+- `${SRIOV_OPERATOR_VERSION}` - The version of the SRIOV Operator chart to be used for the downstream cluster, for example, `307.1.0+up1.6.0`.
 - `${ISOLATED_CPU_CORES}` - The isolated CPU cores to be used for workloads pinning some specific ones. You could get that info using `lscpu` command to list the CPU cores and then, select the cores to be used for the downstream cluster in case you need CPU pinning for your workloads. For example, `1-18,21-38` could be used for the isolated cores.
 - `${NON-ISOLATED_CPU_CORES}` - The cores listed could be used shared for the rest of the process running on the downstream cluster. For example, `0,20,21,39` could be used for the non-isolated cores.
 - `${CPU_FREQUENCY}` - The frequency to be used for the CPU cores. For example, `2500000` represents 2.5Ghz configuration and it could be used to set the CPU cores to the max performance.
-- `${RKE2_VERSION}` - The RKE2 version to be used for the downstream cluster. For example, `1.30.3+rke2r1` could be used for the downstream cluster.
+- `${RKE2_VERSION}` - The RKE2 version to be used for the downstream cluster. For example, `v1.36.3+rke2r1` could be used for the downstream cluster.
 
 You can also modify any other parameter in the `telco-capi-airgap.yaml` file to match with your requirements e.g. DPDK configuration, number of VFs to generate, number of SRIOV interfaces, etc. This is basically a template to be used for the downstream cluster deployment.
 

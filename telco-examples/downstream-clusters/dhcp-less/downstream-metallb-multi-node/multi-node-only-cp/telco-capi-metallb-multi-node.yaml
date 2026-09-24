@@ -102,7 +102,7 @@ spec:
                   spec:
                     chart: oci://registry.suse.com/edge/charts/endpoint-copier-operator
                     targetNamespace: endpoint-copier-operator
-                    version: 306.0.1+up0.3.0
+                    version: 307.0.1+up0.3.0
                     createNamespace: true
             - path: /var/lib/rancher/rke2/server/manifests/metallb.yaml
               overwrite: true
@@ -116,7 +116,7 @@ spec:
                   spec:
                     chart: oci://registry.suse.com/edge/charts/metallb
                     targetNamespace: metallb-system
-                    version: 306.0.2+up0.15.3
+                    version: 307.0.3+up0.16.1
                     createNamespace: true
 
             - path: /var/lib/rancher/rke2/server/manifests/metallb-cr.yaml

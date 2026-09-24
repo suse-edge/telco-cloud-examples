@@ -1,7 +1,6 @@
 cni:
   - multus
   - cilium
-ingress-controller: traefik  # not to be needed once traefik becoming the default ingress (from RKE2 version v1.36) 
 write-kubeconfig-mode: '0644'
 selinux: true
 system-default-registry: registry.rancher.com
