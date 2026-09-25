@@ -5,3 +5,4 @@ ingress-controller: traefik  # not to be needed once traefik becoming the defaul
 write-kubeconfig-mode: '0644'
 selinux: true
 system-default-registry: registry.rancher.com
+disable-default-registry-endpoint: true
