@@ -81,7 +81,6 @@ kubernetes:
         targetNamespace: cattle-turtles-system
         createNamespace: true
         installationNamespace: kube-system
-        valuesFile: turtles.yaml
     repositories:
       - name: jetstack
         url: https://charts.jetstack.io
