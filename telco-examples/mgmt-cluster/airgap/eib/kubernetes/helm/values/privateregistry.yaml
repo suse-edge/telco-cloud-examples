@@ -1,5 +1,3 @@
-core:
-  secretName: suse-registry-tls
 expose:
   tls:
     certSource: secret
