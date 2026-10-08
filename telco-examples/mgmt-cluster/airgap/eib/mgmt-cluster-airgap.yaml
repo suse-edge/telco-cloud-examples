@@ -151,6 +151,7 @@ embeddedArtifactRegistry:
     - name: registry.rancher.com/rancher/rancher-webhook:v0.10.4
     - name: registry.rancher.com/rancher/turtles:v0.26.1
     - name: registry.rancher.com/rancher/rancher:v2.14.1
+    - name: registry.rancher.com/rancher/rancher-agent:v2.14.1
     - name: registry.rancher.com/rancher/shell:v0.1.24
     - name: registry.rancher.com/rancher/system-upgrade-controller:v0.19.1
     - name: registry.rancher.com/rancher/cluster-api-controller:v1.12.2
@@ -161,3 +162,5 @@ embeddedArtifactRegistry:
     - name: registry.rancher.com/rancher/kubectl:v1.35.2
     - name: registry.rancher.com/rancher/scc-operator:v0.4.0
     - name: registry.suse.com/edge/3.6/ironic-python-agent:3.0.8
+    - name: registry.suse.com/edge/3.6/node-feature-discovery:v0.18.2
+    - name: registry.suse.com/edge/3.6/ib-sriov-cni:v1.3.0
