@@ -75,8 +75,8 @@ Once the file has been modified the cluster can be deployed by running:
 
 `$ kubectl apply -f modified-v4v6-cluster.yaml`
 
-You can then test the new Kubernetes cluster by creating a Pod or a Deployment and a dual-stack Service. If you are using Multus, in order to reference the NetworkAttachmentDefinition, do not forget to add the following annotation to your Pod or Deployment:
+You can then test the new Kubernetes cluster by creating a Pod or a Deployment and a dual-stack Service. If you are using Multus, in order to reference the NetworkAttachmentDefinition, do not forget to add the following annotation to your Pod or Deployment, referencing the `kube-system` namespace where the NetworkAttachmentDefinition is created:
 
-`k8s.v1.cni.cncf.io/networks: nad-test-conf`
+`k8s.v1.cni.cncf.io/networks: kube-system/nad-test-conf`
 
 For more information on the files provided to the cluster file at RKE2 install time and related configurations, you can review the "Networking" section of the [RKE2 documentation](https://docs.rke2.io/networking/basic_network_options?CNIplugin=Canal+CNI+plugin#dual-stack-configuration).

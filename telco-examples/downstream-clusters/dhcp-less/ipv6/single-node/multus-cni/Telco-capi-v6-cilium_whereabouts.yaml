@@ -151,12 +151,8 @@ spec:
                           "type": "ptp",
                           "ipam": {
                               "type": "whereabouts",
-                              "ipRanges": [
-                                  {
-                                      "range":   "fd:1234:4321::/64",
-                                      "gateway": "fd:1234:4321:ffff::1"
-                                  }
-                              ]
+                              "range":   "fd:1234:4321::/64",
+                              "gateway": "fd:1234:4321:ffff::1"
                           }
                       }
               mode: 0644
