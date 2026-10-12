@@ -49,14 +49,14 @@ The definition files come with any CNI plugin specific configuration that may be
     | Filename                                  | Primary CNI | Primary IPAM | Secondary CNI | Secondary IPAM |
     |:------------------------------------------|:-----------:|:------------:|:-------------:|:--------------:|
     | `Telco-capi-v4v6-calico_hostlocal.yaml`   |    Calico   |    Calico    |      PTP      |   host-local   |
-    | `Telco-capi-v4v6-calico_whereabouts.yaml` |    Calico   |    Calico    |      PTP      |   whereabouts  |
+    | `Telco-capi-v4v6-calico_whereabouts.yaml` |    Calico   |    Calico    |    MACVLAN    |   whereabouts  |
     | `Telco-capi-v4v6-canal_hostlocal.yaml`    |    Canal    |     Canal    |      PTP      |   host-local   |
-    | `Telco-capi-v4v6-canal_whereabouts.yaml`  |    Canal    |     Canal    |      PTP      |   whereabouts  |
+    | `Telco-capi-v4v6-canal_whereabouts.yaml`  |    Canal    |     Canal    |    MACVLAN    |   whereabouts  |
     | `Telco-capi-v4v6-cilium_hostlocal.yaml`   |    Cilium   |    Cilium    |      PTP      |   host-local   |
-    | `Telco-capi-v4v6-cilium_whereabouts.yaml` |    Cilium   |    Cilium    |      PTP      |   whereabouts  |
+    | `Telco-capi-v4v6-cilium_whereabouts.yaml` |    Cilium   |    Cilium    |    MACVLAN    |   whereabouts  |
 
     **Note**:
-    * The Multus examples leverage the [Point-to-Point plugin](https://www.cni.dev/plugins/current/main/ptp/) for the secondary interface due to its simplicity and ease of testing. Do not forget to replace the CNI configuration within the manifest according to your operational needs.
+    * The `host-local` examples leverage the [Point-to-Point plugin](https://www.cni.dev/plugins/current/main/ptp/) for the secondary interface due to its simplicity and ease of testing, while the `whereabouts` examples leverage the [MACVLAN plugin](https://www.cni.dev/plugins/current/main/macvlan/) attached to the host interface holding the default route, as Whereabouts returns a single gateway for all the address families of a Pod, while the Point-to-Point plugin requires a gateway for each of them. Do not forget to replace the CNI configuration within the manifest according to your operational needs.
     * Regardless of the address management method for the secondary interface, make sure to update the network blocks within the manifest according to your operational needs.
 
 Regardless of the selected file, it should be edited to define at least the following values:
@@ -81,8 +81,8 @@ Once the file has been modified the cluster can be deployed by running:
 
 `$ kubectl apply -f modified-v4v6-cluster.yaml`
 
-You can then test the new Kubernetes cluster by creating a Pod or a Deployment and a dual-stack Service. If you are using Multus, in order to reference the NetworkAttachmentDefinition, do not forget to add the following annotation to your Pod or Deployment:
+You can then test the new Kubernetes cluster by creating a Pod or a Deployment and a dual-stack Service. If you are using Multus, in order to reference the NetworkAttachmentDefinition, do not forget to add the following annotation to your Pod or Deployment, referencing the `kube-system` namespace where the NetworkAttachmentDefinition is created:
 
-`k8s.v1.cni.cncf.io/networks: nad-test-conf`
+`k8s.v1.cni.cncf.io/networks: kube-system/nad-test-conf`
 
 For more information on the files provided to the cluster file at RKE2 install time and related configurations, you can review the "Networking" section of the [RKE2 documentation](https://docs.rke2.io/networking/basic_network_options?CNIplugin=Canal+CNI+plugin#dual-stack-configuration).

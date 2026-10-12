@@ -134,18 +134,17 @@ spec:
                     config: |-
                       {
                           "cniVersion": "0.3.0",
-                          "name": "ptp-whereabouts-conf",
-                          "type": "ptp",
+                          "name": "macvlan-whereabouts-conf",
+                          "type": "macvlan",
+                          "mode": "bridge",
                           "ipam": {
                               "type": "whereabouts",
                               "ipRanges": [
                                   {
-                                      "range":   "10.123.0.0/16",
-                                      "gateway": "10.123.255.254"
+                                      "range": "10.123.0.0/16"
                                   },
                                   {
-                                      "range":   "fd:1234:4321::/64",
-                                      "gateway": "fd:1234:4321:ffff::1"
+                                      "range": "fd:1234:4321::/64"
                                   }
                               ]
                           }
