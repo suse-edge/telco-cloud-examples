@@ -36,7 +36,7 @@ kubernetes:
         installationNamespace: kube-system
       - name: suse-storage
         releaseName: longhorn
-        version: 1.12.1
+        version: 1.12.1-4.1
         repositoryName: rancher-application-collection
         targetNamespace: longhorn-system
         createNamespace: true

@@ -226,7 +226,7 @@ spec:
                     dockerRegistrySecret:
                       name: longhorn-registry
                     targetNamespace: longhorn-system
-                    version: 1.12.1
+                    version: 1.12.1-4.1
                     createNamespace: true
                     valuesContent: |-
                       privateRegistry:
