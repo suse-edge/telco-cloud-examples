@@ -71,7 +71,7 @@ The following steps are required to prepare the airgap artifacts using [`seactl`
    ```
    $ podman run --rm \
      -v ./:/opt:z \
-     registry.suse.com/edge/3.7/release-manifest:3.7.0 \
+     registry.suse.com/edge/3.7/release-manifest:3.7.1 \
      mirror \
      -o /opt/output \
      -a /opt/registry-auth.txt \
@@ -85,7 +85,7 @@ The following steps are required to prepare the airgap artifacts using [`seactl`
    ```
    $ podman run --rm \
      -v ./:/opt:z \
-     registry.suse.com/edge/3.7/release-manifest:3.7.0 \
+     registry.suse.com/edge/3.7/release-manifest:3.7.1 \
      mirror \
      -o /opt/output \
      -a /opt/registry-auth.txt \
@@ -191,7 +191,7 @@ The first thing is to modify the `telco-capi-airgap.yaml` file and replace the f
 - `${ISOLATED_CPU_CORES}` - The isolated CPU cores to be used for workloads pinning some specific ones. You could get that info using `lscpu` command to list the CPU cores and then, select the cores to be used for the downstream cluster in case you need CPU pinning for your workloads. For example, `1-18,21-38` could be used for the isolated cores.
 - `${NON-ISOLATED_CPU_CORES}` - The cores listed could be used shared for the rest of the process running on the downstream cluster. For example, `0,20,21,39` could be used for the non-isolated cores.
 - `${CPU_FREQUENCY}` - The frequency to be used for the CPU cores. For example, `2500000` represents 2.5Ghz configuration and it could be used to set the CPU cores to the max performance.
-- `${RKE2_VERSION}` - The RKE2 version to be used for the downstream cluster. For example, `v1.36.3+rke2r1` could be used for the downstream cluster.
+- `${RKE2_VERSION}` - The RKE2 version to be used for the downstream cluster. For example, `v1.36.5+rke2r1` could be used for the downstream cluster.
 
 You can also modify any other parameter in the `telco-capi-airgap.yaml` file to match with your requirements e.g. DPDK configuration, number of VFs to generate, number of SRIOV interfaces, etc. This is basically a template to be used for the downstream cluster deployment.
 
