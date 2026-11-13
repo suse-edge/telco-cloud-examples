@@ -96,11 +96,12 @@ The following steps are required to prepare the airgap artifacts using [`seactl`
      --debug
    ```
 
-5. Copy the generated RKE2 artifacts from the output directory to the `custom/files` folder to be consumed by EIB during the build process:
+5. Copy the generated RKE2 artifacts from the output directory to the `custom/files` folder to be consumed by EIB during the build process. Each RKE2 release publishes its air-gap images as separate tarballs (see the [RKE2 releases](https://github.com/rancher/rke2/releases) page), so load the `rke2-images-core` tarball together with the additional (optional) image tarballs you need, such as the ones for the CNI in use. This example uses Cilium and Multus, so copy the `rke2-images-core`, `rke2-images-cilium` and `rke2-images-multus` tarballs. The all-in-one `rke2-images.linux-amd64.tar.zst` bundle is not needed: it includes only the core and Canal images, not Cilium or Multus. If you use Calico instead of Cilium, replace `cilium` with `calico` below.
    ```
-   $ cp output/rke2-images*.tar.zst ~/telco-examples/downstream-clusters/airgap/eib/custom/files/
-   $ cp output/rke2.linux-amd64.tar.gz ~/telco-examples/downstream-clusters/airgap/eib/custom/files/
-   $ cp output/sha256sum-amd64.txt ~/telco-examples/downstream-clusters/airgap/eib/custom/files/
+   $ DEST=~/telco-examples/downstream-clusters/airgap/eib/custom/files/
+   $ cp output/rke2-images-{core,cilium,multus}.linux-amd64.tar.zst "$DEST"
+   $ cp output/rke2.linux-amd64.tar.gz "$DEST"
+   $ cp output/sha256sum-amd64.txt "$DEST"
    ```
 
 > **_Note:_** The release container image already bundles `/release_manifest.yaml` and `/release_images.yaml` internally, so no additional manifest files need to be provided. For full flag reference and advanced usage, see the [seactl documentation](https://github.com/suse-edge/seactl/blob/main/README.md).
