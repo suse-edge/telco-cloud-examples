@@ -11,12 +11,14 @@ Everything else (MetalLB, endpoint copier, Longhorn 1.12.1, registry secret) is 
 
 ## Files
 
+- `../longhorn-basic/bmh-cp-node1.yaml` - BareMetalHost definition for control plane node 1
+- `../longhorn-basic/bmh-cp-node2.yaml` - BareMetalHost definition for control plane node 2
+- `../longhorn-basic/bmh-cp-node3.yaml` - BareMetalHost definition for control plane node 3
 - `capi-multinode-dual-disk-longhorn.yaml` - CAPI manifest with the dual-disk changes
-- The BareMetalHost files are the same as in `longhorn-basic`: `bmh-cp-node1.yaml`, `bmh-cp-node2.yaml`, `bmh-cp-node3.yaml`
 
 ## Variables to replace
 
-Use the variables from `longhorn-basic`, plus:
+Use the variables from [`longhorn-basic`](../longhorn-basic/README.md), plus:
 
 - `${SECONDARY_DISK_DEVICE}` - Device of the secondary disk on every node, for example `/dev/nvme1n1`. The same device name must be present on all three nodes; otherwise the script skips a node and its Longhorn disk is not created.
 
@@ -26,9 +28,11 @@ Check the device name on a node before deploying (for example with `lsblk`). Dev
 
 ### Step 1: Generate the registry secret
 
-As in `longhorn-basic`, generate the base64 dockerconfigjson for `dp.apps.rancher.io` and use it for `${DP_APPS_RANCHER_SECRET}`.
+As in [`longhorn-basic`](../longhorn-basic/README.md), generate the base64 dockerconfigjson for `dp.apps.rancher.io` and use it for `${DP_APPS_RANCHER_SECRET}`.
 
 ### Step 2: Enroll the BareMetalHosts
+
+Refer to [`longhorn-basic`](../longhorn-basic/README.md) for required per-node configurations.
 
 ```bash
 kubectl apply -f ../longhorn-basic/bmh-cp-node1.yaml
@@ -45,7 +49,7 @@ export SECONDARY_DISK_DEVICE=/dev/nvme1n1
 envsubst < capi-multinode-dual-disk-longhorn.yaml | kubectl apply -f -
 ```
 
-Use the same substitution method you use for the `longhorn-basic` manifest if it differs.
+Use the same substitution method you use for the [`longhorn-basic`](../longhorn-basic/README.md) manifest if it differs.
 
 ### Step 4: Add the Longhorn disks to each node
 
