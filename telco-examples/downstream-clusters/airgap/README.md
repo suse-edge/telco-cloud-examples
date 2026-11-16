@@ -170,8 +170,7 @@ Once the new baremetal host is available, you need to provision the new host usi
 
 The first thing is to modify the `telco-capi-airgap.yaml` file and replace the following with your values:
 
-- `${TLS_BASE64_CERT}` and `${TLS_BASE64_KEY}` - In case your private registry contains a client certificate and key, you should encode them in base64 format and replace these variables.
-- `${CA_BASE64_CERT}` - In case your private registry enables TLS, you need to encode a CA certificate in base64 format and replace this variable.
+- `${CA_BASE64_CERT}` - In case your private registry enables TLS, you need to encode the registry CA certificate in base64 format and replace this variable. The downstream cluster only needs to trust the CA to verify the private registry; the registry's own TLS certificate and key are only required on the management cluster side.
 - `${CA_CERT}` - Same value as `${CA_BASE64_CERT}` but without encoding.
 - `${REGISTRY_AUTH_DOCKERCONFIGJSON}` - In case your private registry enables the basic auth mechanism, you need to encode the username and password in base64 format and replace this variable. As a reference, you can use the following command to generate the value:
   ```
