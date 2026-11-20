@@ -127,7 +127,7 @@ All the following commands in this section could be executed on any x86_64 Linux
 ```
 $ cd telco-examples/edge-clusters/airgap/eib
 $ sudo podman run --rm --privileged -it -v $PWD:/eib \
-registry.suse.com/edge/3.5/edge-image-builder:1.3.2 \
+registry.suse.com/edge/3.5/edge-image-builder:1.3.4 \
 build --definition-file telco-edge-airgap-cluster.yaml
 ```
 

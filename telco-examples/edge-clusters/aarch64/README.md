@@ -46,7 +46,7 @@ All the following commands in this section could be executed using any linux lap
 ```
 $ cd telco-examples/edge-clusters/aarch64/eib
 $ sudo podman run --rm --privileged -it -v $PWD:/eib \
-registry.suse.com/edge/3.5/edge-image-builder:1.3.2 \
+registry.suse.com/edge/3.5/edge-image-builder:1.3.4 \
 build --definition-file telco-edge-cluster-aarch64.yaml
 ```
 
