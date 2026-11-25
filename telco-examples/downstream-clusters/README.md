@@ -51,7 +51,7 @@ All the following commands in this section could be executed using any linux lap
 ```
 $ cd telco-examples/downstream-clusters
 $ sudo podman run --rm --privileged -it -v $PWD:/eib \
-registry.suse.com/edge/3.6/edge-image-builder:1.3.3.1 \
+registry.suse.com/edge/3.6/edge-image-builder:1.3.4 \
 build --definition-file telco-downstream-cluster.yaml
 ```
 
