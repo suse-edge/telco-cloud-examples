@@ -71,7 +71,7 @@ The following steps are required to prepare the airgap artifacts using [`seactl`
    ```
    $ podman run --rm \
      -v ./:/opt:z \
-     registry.suse.com/edge/3.6/release-manifest:3.6.0 \
+     registry.suse.com/edge/3.6/release-manifest:3.6.3 \
      mirror \
      -o /opt/output \
      -a /opt/registry-auth.txt \
@@ -85,7 +85,7 @@ The following steps are required to prepare the airgap artifacts using [`seactl`
    ```
    $ podman run --rm \
      -v ./:/opt:z \
-     registry.suse.com/edge/3.6/release-manifest:3.6.0 \
+     registry.suse.com/edge/3.6/release-manifest:3.6.3 \
      mirror \
      -o /opt/output \
      -a /opt/registry-auth.txt \
@@ -115,7 +115,7 @@ All the following commands in this section could be executed on any x86_64 Linux
 ```
 $ cd telco-examples/downstream-clusters/airgap/eib
 $ sudo podman run --rm --privileged -it -v $PWD:/eib \
-registry.suse.com/edge/3.6/edge-image-builder:1.3.3.1 \
+registry.suse.com/edge/3.6/edge-image-builder:1.3.4 \
 build --definition-file telco-edge-airgap-cluster.yaml
 ```
 
